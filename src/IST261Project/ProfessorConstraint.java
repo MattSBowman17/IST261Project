@@ -8,6 +8,13 @@ public class ProfessorConstraint {
 
     private int Time_Time_ID;
 
+    
+    public ProfessorConstraint(int Professor_Professor_ID, int Time_Time_ID)
+    {
+        this.Professor_Professor_ID = Professor_Professor_ID;
+        this.Time_Time_ID = Time_Time_ID;
+    }
+    
     /**
      * @return the ProfessorConstraint_ID
      */

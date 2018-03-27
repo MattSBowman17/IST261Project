@@ -1,3 +1,5 @@
+package IST261Project;
+
 public class ProfessorConstraint {
 
     private int ProfessorConstraint_ID;

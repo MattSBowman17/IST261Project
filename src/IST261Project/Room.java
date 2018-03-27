@@ -1,3 +1,5 @@
+package IST261Project;
+
 public class Room {
 
     private int Room_ID;

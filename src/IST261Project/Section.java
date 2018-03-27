@@ -1,3 +1,5 @@
+package IST261Project;
+
 public class Section {
 
     private int Section_ID;

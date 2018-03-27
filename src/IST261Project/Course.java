@@ -1,3 +1,5 @@
+package IST261Project;
+
 public class Course {
 
     private int Course_ID;

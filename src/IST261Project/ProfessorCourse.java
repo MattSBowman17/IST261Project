@@ -1,3 +1,5 @@
+package IST261Project;
+
 public class ProfessorCourse {
 
     private String ProfessorCourseID;

@@ -1,3 +1,5 @@
+package IST261Project;
+
 //Peter Initial Test Commit
 
 public class Building {

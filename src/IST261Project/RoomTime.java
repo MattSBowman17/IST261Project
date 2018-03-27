@@ -1,3 +1,5 @@
+package IST261Project;
+
 public class RoomTime {
 
     private String RoomTimeID;

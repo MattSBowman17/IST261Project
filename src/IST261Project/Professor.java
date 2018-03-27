@@ -1,3 +1,5 @@
+package IST261Project;
+
 public class Professor {
 
     private int Professor_ID;

@@ -14,6 +14,18 @@ public class Course {
 
     private String Course_Level;
 
+    /** Test version of the Course creator
+     * 
+     * @param Course_ID
+     * @param Course_EstStudents 
+     */
+    
+    public Course(int Course_ID, int Course_EstStudents)
+    {
+        this.Course_ID = Course_ID;
+        this.Course_EstStudents = Course_EstStudents;
+    }
+    
     /**
      * @return the Course_ID
      */

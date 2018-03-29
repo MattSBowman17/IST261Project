@@ -2,26 +2,24 @@ package IST261Project;
 
 public class RoomTime {
 
-    private String RoomTimeID;
+    private int RoomTimeID;
 
     private int Time_Time_ID;
 
     private int Room_idRoom;
 
-    /**
-     * @return the RoomTimeID
-     */
-    public String getRoomTimeID() {
-        return RoomTimeID;
-    }
-
-    /**
-     * @param RoomTimeID the RoomTimeID to set
-     */
-    public void setRoomTimeID(String RoomTimeID) {
+    
+    
+    public RoomTime(int RoomTimeID, int Time_Time_ID,int Room_idRoom)
+    {
         this.RoomTimeID = RoomTimeID;
+        this.Time_Time_ID = Time_Time_ID;
+        this.Room_idRoom = Room_idRoom;
+ 
     }
-
+    
+    
+    
     /**
      * @return the Time_Time_ID
      */
@@ -48,6 +46,20 @@ public class RoomTime {
      */
     public void setRoom_idRoom(int Room_idRoom) {
         this.Room_idRoom = Room_idRoom;
+    }
+
+    /**
+     * @return the RoomTimeID
+     */
+    public int getRoomTimeID() {
+        return RoomTimeID;
+    }
+
+    /**
+     * @param RoomTimeID the RoomTimeID to set
+     */
+    public void setRoomTimeID(int RoomTimeID) {
+        this.RoomTimeID = RoomTimeID;
     }
     
 }

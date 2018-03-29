@@ -23,7 +23,7 @@ public class Professor {
      * 
      */
     
-    Professor()
+    Professor(int Professor_ID, int Professor_CoruseLoad)
     {
         
     }

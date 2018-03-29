@@ -5,6 +5,12 @@
  */
 package IST261Project;
 
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
 /**
  *
  * @author msb5626
@@ -101,22 +107,170 @@ public class jpButtons extends javax.swing.JPanel {
 
     private void jbNewProfessorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNewProfessorActionPerformed
         // TODO add your handling code here:
+        String strProfessorID;
+        String strFName;
+        String strLName;
+        String strCourseLoad;
+        String strUsername;
+        String strDepartment;
+        
+        JTextField jtfID = new JTextField();
+        JTextField jtfFName = new JTextField();
+        JTextField jtfLName = new JTextField();
+        JTextField jtfCourseLoad = new JTextField();
+        JTextField jtfUsername = new JTextField();
+        JTextField jtfDepartment = new JTextField();
+        
+        final JComponent[] inputs = new JComponent[] 
+        {
+           new JLabel("Professor ID"),
+           jtfID,
+           new JLabel("First Name"),
+           jtfFName,
+           new JLabel("Last Name"),
+           jtfLName,
+           new JLabel("Courseload (credits)"),
+           jtfCourseLoad,
+           new JLabel("Username"),
+           jtfUsername,
+           new JLabel("Department"),
+           jtfDepartment
+        };
+        
+int result = JOptionPane.showConfirmDialog(null, inputs, "New Professor Info", JOptionPane.PLAIN_MESSAGE);
+if (result == JOptionPane.OK_OPTION) 
+{
+   strProfessorID = jtfID.getText();
+   strFName = jtfFName.getText();
+   strLName = jtfLName.getText();
+   strCourseLoad = jtfCourseLoad.getText();
+   strUsername = jtfUsername.getText();
+   strDepartment = jtfDepartment.getText();
+    System.out.println("You entered \n" 
+            + "Professor ID  "  + strProfessorID + "\n"
+            + "First Name  "  + strFName + "\n"
+            + "Last Name  "  +  strLName + "\n"
+            + "Courseload    "  + strCourseLoad + "\n"
+            + "Username    "  + strUsername + "\n"
+            + "Department   " + strDepartment + "\n"
+    );
+} else {
+    System.out.println("User canceled / closed the dialog, result = " + result);
+}
     }//GEN-LAST:event_jbNewProfessorActionPerformed
 
     private void jbAddSectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAddSectionActionPerformed
         // TODO add your handling code here:
+        String strSectionID;
+        String strProfessorCourseID;
+        String strRoomTimeID;
+        String strSectionNumber;
+                
+        JTextField jtfSectionID = new JTextField();
+        /JTextField jtfProfessorCourse = new JTextField();
+        /JTextField jtfRoomTimeID = new JTextField();
+        JTextField jtfSectionNumber = new JTextField();
+        
+        final JComponent[] inputs = new JComponent[] 
+        {
+           new JLabel("Section ID"),
+           jtfSectionID,
+           new JLabel("Professor Course ID"),
+           /jtfCredits,
+           new JLabel("Estimated Students"),
+           /jtfEstStudents,
+           new JLabel("Name"),
+           jtfName,
+           new JLabel("Major"),
+           jtfMajor,
+           new JLabel("Level"),
+           jtfLevel
+        };
+        
+int result = JOptionPane.showConfirmDialog(null, inputs, "New Professor Info", JOptionPane.PLAIN_MESSAGE);
+if (result == JOptionPane.OK_OPTION) 
+{
+   strCourseID = jtfCourseID.getText();
+   strCredits = jtfCredits.getText();
+   strEstStudents = jtfEstStudents.getText();
+   strName = jtfName.getText();
+   strMajor = jtfMajor.getText();
+   strLevel = jtfLevel.getText();
+    System.out.println("You entered \n" 
+            + "Course ID  "  + strCourseID + "\n"
+            + "Credits  "  + strCredits + "\n"
+            + "Estimated Students  "  +  strEstStudents + "\n"
+            + "Name    "  + strName + "\n"
+            + "Major    "  + strMajor + "\n"
+            + "Level   " + strLevel + "\n"
+    );
+} else {
+    System.out.println("User canceled / closed the dialog, result = " + result);
+}
     }//GEN-LAST:event_jbAddSectionActionPerformed
 
     private void jbNewClassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNewClassActionPerformed
         // TODO add your handling code here:
+        String strCourseID;
+        String strCredits;
+        String strEstStudents;
+        String strName;
+        String strMajor;
+        String strLevel;
+        
+        JTextField jtfCourseID = new JTextField();
+        JTextField jtfCredits = new JTextField();
+        JTextField jtfEstStudents = new JTextField();
+        JTextField jtfName = new JTextField();
+        JTextField jtfMajor = new JTextField();
+        JTextField jtfLevel = new JTextField();
+        
+        final JComponent[] inputs = new JComponent[] 
+        {
+           new JLabel("Course ID"),
+           jtfCourseID,
+           new JLabel("Credits"),
+           jtfCredits,
+           new JLabel("Estimated Students"),
+           jtfEstStudents,
+           new JLabel("Name"),
+           jtfName,
+           new JLabel("Major"),
+           jtfMajor,
+           new JLabel("Level"),
+           jtfLevel
+        };
+        
+int result = JOptionPane.showConfirmDialog(null, inputs, "New Professor Info", JOptionPane.PLAIN_MESSAGE);
+if (result == JOptionPane.OK_OPTION) 
+{
+   strCourseID = jtfCourseID.getText();
+   strCredits = jtfCredits.getText();
+   strEstStudents = jtfEstStudents.getText();
+   strName = jtfName.getText();
+   strMajor = jtfMajor.getText();
+   strLevel = jtfLevel.getText();
+    System.out.println("You entered \n" 
+            + "Course ID  "  + strCourseID + "\n"
+            + "Credits  "  + strCredits + "\n"
+            + "Estimated Students  "  +  strEstStudents + "\n"
+            + "Name    "  + strName + "\n"
+            + "Major    "  + strMajor + "\n"
+            + "Level   " + strLevel + "\n"
+    );
+} else {
+    System.out.println("User canceled / closed the dialog, result = " + result);
+}
     }//GEN-LAST:event_jbNewClassActionPerformed
 
     private void jbNewScheduleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNewScheduleActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_jbNewScheduleActionPerformed
 
     private void jbConstraintsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbConstraintsActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_jbConstraintsActionPerformed
 
 

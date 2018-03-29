@@ -15,9 +15,9 @@ public class jfMain extends javax.swing.JFrame {
      * Creates new form jfMain
      */
     public jfMain() {
-        jpButtons myJPB = new jpButtons();
-        myJPB.setVisible(true);
-        this.add(myJPB);
+        BuildingRoomPanel myBuildings = new BuildingRoomPanel();
+        myBuildings.setVisible(true);
+        this.add(myBuildings);
         this.pack();
         initComponents();
     }

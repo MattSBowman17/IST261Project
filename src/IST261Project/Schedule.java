@@ -15,7 +15,11 @@ import java.util.Random;
  */
 public class Schedule
 {
-    private int count = 10;
+    private int intTestingSize = 10;
+    private int intCapacity = 30;
+    private boolean bDebugging = true;
+    
+    
     Random myR = new Random();
     
 //  ProfessorCourse myPC = new ProfessorCourse(1, 1, 1);
@@ -29,6 +33,8 @@ public class Schedule
     //Avaliable RoomTimes
     ArrayList<RoomTime> ALRoomTAva = new ArrayList<>();
     
+    
+    ArrayList<Section> ALSection = new ArrayList<>();
     ArrayList<ProfessorCourse> ALProfC = new ArrayList<>(); 
     ArrayList<Room> ALRoom = new ArrayList<>();    
     ArrayList<Course> ALCourse = new ArrayList<>();       
@@ -42,6 +48,7 @@ public class Schedule
     {
         //myHMap.putIfAbsent(myRT, myPC);
         getData();
+        createSections();
 
       
     }
@@ -56,23 +63,91 @@ public class Schedule
          *  Right now it will only generate dummy data
          */
         
-        for(int i = 0; i < count; i++)
+        for(int i = 0; i < intTestingSize; i++)
         {
-            ALProfC.add(new ProfessorCourse(i, i, i));
+            ALProfC.add(new ProfessorCourse(i, i+1, i));
             ALRoomTAva.add(new RoomTime(i, i, 1));
-            ALCourse.add(new Course(i, (myR.nextInt(4-2)*10)));
+            ALCourse.add(new Course(i, ((myR.nextInt(4)+1)*10)));
             ALRoom.add(new Room(i, 30, myR.nextInt(2-1)));
-           
+            
         }
     }
     
+//    /**
+//     * 
+//     * 
+//     * @return True if the section can be added to HashMap 
+//     */
+//    public boolean addSection()
+//    {
+//        return true;
+//    }
     
-    /**Add a section to the HashMap.
-     * Assigns a ProfessorCourse
+    /**createSections.
+     * Stage 2 of Scheduling. 
+     * Uses data from database to create a list of all the required sections  
+     * based on the class size that thinks is possible
      * 
-     * @return True if the section can be added to HashMap 
+     * 
+     * For the most part complete
+     * TODO: find a way to dynamically find capacity of room.
      */
-    public boolean addSection()
+    public void createSections()
+    {
+        int intSectionID = 0;
+        
+        for(int i = 0; i<ALProfC.size(); i++)
+        {
+            int intSectionSize = ALCourse.get(ALProfC.get(i).getCourse_CourseID()).getCourse_EstStudents();
+            int intNumSections = 1;
+                    
+            while(intSectionSize> intCapacity)
+            {
+               intNumSections++;
+               intSectionSize = intSectionSize/intNumSections;
+            } 
+            while(intNumSections > 0)
+            {
+                intSectionID++;
+                ALSection.add(new Section(intSectionID, intSectionSize, ALProfC.get(i).getCourse_CourseID()));
+                intNumSections--;
+            }
+        }
+        if(bDebugging)
+        {
+            for(int i = 0; i < ALSection.size(); i++)
+            {
+                System.out.println("Section ID: " + ALSection.get(i).getSection_ID() + ", " + ALSection.get(i).getSectNumStudents() + ", " + ALSection.get(i).getProfessorCourse_ProfessorCourseID());
+            }
+        }
+    }
+    
+    /**Step 3 of Scheduling.
+     * Uses professor data from professorCourse to add professors to all the
+     * courses
+     */
+    public void scheduleProfessors()
+    {
+        
+    }
+    
+    /**Step 4 of Scheduling.
+     * Uses data from professorConstraint to make sure that professors can
+     * work at that given timeslot
+     * 
+     */
+    public void scheduleTimes()
+    {
+        
+    }
+    
+    /**Step 5 of Scheduling. 
+     * Check if the schedule has any major conflicts
+     *  
+     * 
+     * @return True if the schedule is allowed to be pushed to database
+     */
+    public boolean checkSchedule()
     {
         return true;
     }

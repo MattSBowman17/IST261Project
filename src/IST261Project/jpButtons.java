@@ -5,6 +5,7 @@
  */
 package IST261Project;
 
+import java.sql.PreparedStatement;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -167,8 +168,8 @@ if (result == JOptionPane.OK_OPTION)
         String strSectionNumber;
                 
         JTextField jtfSectionID = new JTextField();
-        /JTextField jtfProfessorCourse = new JTextField();
-        /JTextField jtfRoomTimeID = new JTextField();
+        JTextField jtfProfessorCourseID = new JTextField();
+        JTextField jtfRoomTimeID = new JTextField();
         JTextField jtfSectionNumber = new JTextField();
         
         final JComponent[] inputs = new JComponent[] 
@@ -176,37 +177,35 @@ if (result == JOptionPane.OK_OPTION)
            new JLabel("Section ID"),
            jtfSectionID,
            new JLabel("Professor Course ID"),
-           /jtfCredits,
-           new JLabel("Estimated Students"),
-           /jtfEstStudents,
-           new JLabel("Name"),
-           jtfName,
-           new JLabel("Major"),
-           jtfMajor,
-           new JLabel("Level"),
-           jtfLevel
+           jtfProfessorCourseID,
+           new JLabel("Room Time ID"),
+           jtfRoomTimeID,
+           new JLabel("Section Number"),
+           jtfSectionNumber,
         };
         
-int result = JOptionPane.showConfirmDialog(null, inputs, "New Professor Info", JOptionPane.PLAIN_MESSAGE);
+int result = JOptionPane.showConfirmDialog(null, inputs, "New Section Info", JOptionPane.PLAIN_MESSAGE);
 if (result == JOptionPane.OK_OPTION) 
 {
-   strCourseID = jtfCourseID.getText();
-   strCredits = jtfCredits.getText();
-   strEstStudents = jtfEstStudents.getText();
-   strName = jtfName.getText();
-   strMajor = jtfMajor.getText();
-   strLevel = jtfLevel.getText();
+   strSectionID = jtfSectionID.getText();
+   strProfessorCourseID = jtfProfessorCourseID.getText();
+   strRoomTimeID = jtfRoomTimeID.getText();
+   strSectionNumber = jtfSectionNumber.getText();
     System.out.println("You entered \n" 
-            + "Course ID  "  + strCourseID + "\n"
-            + "Credits  "  + strCredits + "\n"
-            + "Estimated Students  "  +  strEstStudents + "\n"
-            + "Name    "  + strName + "\n"
-            + "Major    "  + strMajor + "\n"
-            + "Level   " + strLevel + "\n"
+            + "Section ID  "  + strSectionID + "\n"
+            + "Professor Course ID  "  + strProfessorCourseID + "\n"
+            + "Room Time ID  "  +  strRoomTimeID + "\n"
+            + "SectionNumber    "  + strSectionNumber + "\n"
     );
 } else {
     System.out.println("User canceled / closed the dialog, result = " + result);
 }
+String strSQL =  "INSERT into ctg5117.section (Section_ID, ProfessorCourse_ProfessorCourseID, RoomTime_RoomTimeID, Section_SectionNumber) VALUES (?,?,?,?)";
+PreparedStatement myPS1;
+myPS1 = myDBConnector.myConnection.prepareStatement(strSQL);
+myPS1.setString(1, strSectionID);
+myPS1.setString(2, strProfessorCourseID);
+myPS1.setString(3, str);
     }//GEN-LAST:event_jbAddSectionActionPerformed
 
     private void jbNewClassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNewClassActionPerformed
@@ -241,7 +240,7 @@ if (result == JOptionPane.OK_OPTION)
            jtfLevel
         };
         
-int result = JOptionPane.showConfirmDialog(null, inputs, "New Professor Info", JOptionPane.PLAIN_MESSAGE);
+int result = JOptionPane.showConfirmDialog(null, inputs, "New Course Info", JOptionPane.PLAIN_MESSAGE);
 if (result == JOptionPane.OK_OPTION) 
 {
    strCourseID = jtfCourseID.getText();

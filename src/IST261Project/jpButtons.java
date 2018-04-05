@@ -6,6 +6,10 @@
 package IST261Project;
 
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -16,13 +20,28 @@ import javax.swing.JTextField;
  *
  * @author msb5626
  */
-public class jpButtons extends javax.swing.JPanel {
+public class jpButtons extends javax.swing.JPanel 
+{
 
     /**
      * Creates new form jpMain
      */
-    public jpButtons() {
+    DBConnector myDBConnector;
+    
+    public jpButtons(DBConnector inDBC) 
+    {
+        myDBConnector = inDBC;
         initComponents();
+    }
+    
+    public void setDBConnector(DBConnector dbcIn)
+    {
+       myDBConnector = dbcIn;    
+    }
+    
+    public DBConnector getDBConnector()
+    {
+       return myDBConnector;    
     }
 
     /**
@@ -115,7 +134,7 @@ public class jpButtons extends javax.swing.JPanel {
         String strUsername;
         String strDepartment;
         
-        JTextField jtfID = new JTextField();
+        JTextField jtfProfessorID = new JTextField();
         JTextField jtfFName = new JTextField();
         JTextField jtfLName = new JTextField();
         JTextField jtfCourseLoad = new JTextField();
@@ -125,7 +144,7 @@ public class jpButtons extends javax.swing.JPanel {
         final JComponent[] inputs = new JComponent[] 
         {
            new JLabel("Professor ID"),
-           jtfID,
+           jtfProfessorID,
            new JLabel("First Name"),
            jtfFName,
            new JLabel("Last Name"),
@@ -141,7 +160,7 @@ public class jpButtons extends javax.swing.JPanel {
 int result = JOptionPane.showConfirmDialog(null, inputs, "New Professor Info", JOptionPane.PLAIN_MESSAGE);
 if (result == JOptionPane.OK_OPTION) 
 {
-   strProfessorID = jtfID.getText();
+   strProfessorID = jtfProfessorID.getText();
    strFName = jtfFName.getText();
    strLName = jtfLName.getText();
    strCourseLoad = jtfCourseLoad.getText();
@@ -155,8 +174,31 @@ if (result == JOptionPane.OK_OPTION)
             + "Username    "  + strUsername + "\n"
             + "Department   " + strDepartment + "\n"
     );
-} else {
+} 
+else 
+{
     System.out.println("User canceled / closed the dialog, result = " + result);
+}
+String strSQL =  "INSERT into ctg5117.professor (Professor_ID, Professor_FName, Professor_LName, Professor_CourseLoad, Professor_Username, Professor_Department) VALUES (?,?,?,?,?,?);";
+PreparedStatement myPS1;
+strProfessorID = jtfProfessorID.getText();
+strFName = jtfFName.getText();
+strLName = jtfLName.getText();
+strCourseLoad = jtfCourseLoad.getText();
+strUsername = jtfUsername.getText();
+strDepartment = jtfDepartment.getText();
+try {
+myPS1 = myDBConnector.myConnection.prepareStatement(strSQL);
+myPS1.setString(1, strProfessorID);
+myPS1.setString(2, strFName);
+myPS1.setString(3, strLName);
+myPS1.setString(4, strCourseLoad);
+myPS1.setString(5, strUsername);
+myPS1.setString(6, strDepartment);
+myPS1.executeUpdate();
+}
+catch (SQLException ex) {
+            Logger.getLogger(jpButtons.class.getName()).log(Level.SEVERE, null, ex);
 }
     }//GEN-LAST:event_jbNewProfessorActionPerformed
 
@@ -168,8 +210,8 @@ if (result == JOptionPane.OK_OPTION)
         String strSectionNumber;
                 
         JTextField jtfSectionID = new JTextField();
-        JTextField jtfProfessorCourseID = new JTextField();
-        JTextField jtfRoomTimeID = new JTextField();
+        JComboBox jcbProfessorCourseID = new JComboBox();
+        JComboBox jcbRoomTimeID = new JComboBox();
         JTextField jtfSectionNumber = new JTextField();
         
         final JComponent[] inputs = new JComponent[] 
@@ -177,9 +219,9 @@ if (result == JOptionPane.OK_OPTION)
            new JLabel("Section ID"),
            jtfSectionID,
            new JLabel("Professor Course ID"),
-           jtfProfessorCourseID,
+           jcbProfessorCourseID,
            new JLabel("Room Time ID"),
-           jtfRoomTimeID,
+           jcbRoomTimeID,
            new JLabel("Section Number"),
            jtfSectionNumber,
         };
@@ -188,8 +230,8 @@ int result = JOptionPane.showConfirmDialog(null, inputs, "New Section Info", JOp
 if (result == JOptionPane.OK_OPTION) 
 {
    strSectionID = jtfSectionID.getText();
-   strProfessorCourseID = jtfProfessorCourseID.getText();
-   strRoomTimeID = jtfRoomTimeID.getText();
+   strProfessorCourseID = jcbProfessorCourseID.getActionCommand();
+   strRoomTimeID = jcbRoomTimeID.getActionCommand();
    strSectionNumber = jtfSectionNumber.getText();
     System.out.println("You entered \n" 
             + "Section ID  "  + strSectionID + "\n"
@@ -197,15 +239,28 @@ if (result == JOptionPane.OK_OPTION)
             + "Room Time ID  "  +  strRoomTimeID + "\n"
             + "SectionNumber    "  + strSectionNumber + "\n"
     );
-} else {
+} 
+else 
+{
     System.out.println("User canceled / closed the dialog, result = " + result);
 }
-String strSQL =  "INSERT into ctg5117.section (Section_ID, ProfessorCourse_ProfessorCourseID, RoomTime_RoomTimeID, Section_SectionNumber) VALUES (?,?,?,?)";
+String strSQL =  "INSERT into ctg5117.section (Section_ID, ProfessorCourse_ProfessorCourseID, RoomTime_RoomTimeID, Section_SectionNumber) VALUES (?,?,?,?);";
 PreparedStatement myPS1;
+strSectionID = jtfSectionID.getText();
+strProfessorCourseID = jcbProfessorCourseID.getActionCommand();
+strRoomTimeID = jcbRoomTimeID.getActionCommand();
+strSectionNumber = jtfSectionNumber.getText();
+try {
 myPS1 = myDBConnector.myConnection.prepareStatement(strSQL);
 myPS1.setString(1, strSectionID);
 myPS1.setString(2, strProfessorCourseID);
-myPS1.setString(3, str);
+myPS1.setString(3, strRoomTimeID);
+myPS1.setString(4, strSectionNumber);
+myPS1.executeUpdate();
+}
+catch (SQLException ex) {
+            Logger.getLogger(jpButtons.class.getName()).log(Level.SEVERE, null, ex);
+}
     }//GEN-LAST:event_jbAddSectionActionPerformed
 
     private void jbNewClassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNewClassActionPerformed
@@ -257,8 +312,31 @@ if (result == JOptionPane.OK_OPTION)
             + "Major    "  + strMajor + "\n"
             + "Level   " + strLevel + "\n"
     );
-} else {
+} 
+else 
+{
     System.out.println("User canceled / closed the dialog, result = " + result);
+}
+String strSQL =  "INSERT into ctg5117.course (Course_ID, Course_Credits, Course_EstStudents, Course_Name, Course_Major, Course_Level) VALUES (?,?,?,?,?,?);";
+PreparedStatement myPS1;
+strCourseID = jtfCourseID.getText();
+strCredits = jtfCredits.getText();
+strEstStudents = jtfEstStudents.getText();
+strName = jtfName.getText();
+strMajor = jtfMajor.getText();
+strLevel = jtfLevel.getText();
+try {
+myPS1 = myDBConnector.myConnection.prepareStatement(strSQL);
+myPS1.setString(1, strCourseID);
+myPS1.setString(2, strCredits);
+myPS1.setString(3, strEstStudents);
+myPS1.setString(4, strName);
+myPS1.setString(5, strMajor);
+myPS1.setString(6, strLevel);
+myPS1.executeUpdate();
+}
+catch (SQLException ex) {
+            Logger.getLogger(jpButtons.class.getName()).log(Level.SEVERE, null, ex);
 }
     }//GEN-LAST:event_jbNewClassActionPerformed
 

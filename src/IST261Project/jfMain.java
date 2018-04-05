@@ -11,11 +11,12 @@ package IST261Project;
  */
 public class jfMain extends javax.swing.JFrame {
 
+    DBConnector myDBC;
     /**
      * Creates new form jfMain
      */
     public jfMain() {
-        jpButtons myJPB = new jpButtons();
+        jpButtons myJPB = new jpButtons(myDBC);
         myJPB.setVisible(true);
         this.add(myJPB);
         this.pack();
@@ -70,6 +71,12 @@ public class jfMain extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        if (myDBC != null)
+        {
+            myDBC.closeConnection();
+      
+        }
+        
         System.exit(0);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 

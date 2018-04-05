@@ -1,5 +1,7 @@
 package IST261Project;
 
+import java.util.Scanner;
+
 public class Package {
 
     private int Package_ID;
@@ -11,6 +13,12 @@ public class Package {
     private boolean Package_Projector;
 
     private int Package_Major;
+     
+   //Package Constructor
+    public Package(int Package_ID, int Package_Major){
+        this.Package_ID = Package_ID;
+        this.Package_Major = Package_Major;
+    }
 
     /**
      * @return the Package_ID

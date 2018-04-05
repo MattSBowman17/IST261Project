@@ -10,7 +10,9 @@ public class ProfessorCourse {
 
     private int Package_Package_ID;
     
+
     public ProfessorCourse(int ProfessorCourseID, int Professor_ProfessorID, int Course_CourseID, int Package_Package_ID)
+
     {
         this.ProfessorCourseID = ProfessorCourseID;
         this.Professor_ProfessorID = Professor_ProfessorID;

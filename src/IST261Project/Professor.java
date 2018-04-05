@@ -24,10 +24,14 @@ public class Professor {
      * 
      * 
      */
-    
-    Professor(int Professor_ID, int Professor_CoruseLoad)
+  
+    public Professor() {
+    }
+    Professor(int Professor_ID, int Professor_CourseLoad)
     {
-        this.Professor_ID = Professor_ID;
+
+        this.Professor_ID= Professor_ID;
+
         this.Professor_CourseLoad = Professor_CourseLoad;
     }
     

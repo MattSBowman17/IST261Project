@@ -10,6 +10,7 @@ public class ProfessorCourse {
 
     private int Package_Package_ID;
     
+    //ProfessorCourse Constructor
     public ProfessorCourse(int Professor_ProfessorID, int Course_CourseID, int Package_Package_ID)
     {
         this.Professor_ProfessorID = Professor_ProfessorID;

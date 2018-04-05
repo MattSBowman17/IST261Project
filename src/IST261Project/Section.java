@@ -14,7 +14,7 @@ public class Section {
 
     
    
-    
+    //Section Constructor
     public Section(int Section_ID, int SectNumStudents, int ProfessorCourse_ProfessorCourseID)
     {
         this.Section_ID = Section_ID;

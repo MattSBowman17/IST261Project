@@ -13,6 +13,10 @@ public class Timeslot {
 
     private String Time_DayID;
 
+    //Timeslot Constructor
+    Timeslot (int Time_ID){
+        this.Time_ID = Time_ID;
+    }
     /**
      * @return the Time_ID
      */

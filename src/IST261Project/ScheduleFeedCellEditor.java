@@ -25,8 +25,8 @@ public class ScheduleFeedCellEditor extends AbstractCellEditor implements TableC
 
     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) 
     {
-        ScheduleFeed feed = (ScheduleFeed)value;
-        feedComponent.updateData(feed, true, table);
+        ScheduleFeed sections = (ScheduleFeed)value;
+        feedComponent.updateData(sections, false, table, row, column);
         return feedComponent;
     }
 

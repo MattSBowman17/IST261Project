@@ -5,7 +5,6 @@
  */
 package IST261Project;
 
-import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 
@@ -17,20 +16,21 @@ import javax.swing.table.AbstractTableModel;
 
 public class ScheduleFeedTableModel extends AbstractTableModel
 {
-    List feeds;
-    String[] days = new String[]{"Monday","Tuesday","Wednesday","Thursday","Friday"};;
+    String[] days = new String[]{"Monday","Tuesday","Wednesday","Thursday","Friday"};
+    ScheduleFeed[][] sections = new ScheduleFeed[9][5];
+    
 
-    public ScheduleFeedTableModel(List feeds) 
+    public ScheduleFeedTableModel(ScheduleFeed[][] sections) 
     {
-        this.feeds = feeds;
+        this.sections = sections;
     }
 
     
     public Class getColumnClass(int columnIndex) { return ScheduleFeed.class; }
     public int getColumnCount() { return 5; }
     public String getColumnName(int columnIndex) { return days[columnIndex]; }
-    public int getRowCount() { return (feeds == null) ? 0 : feeds.size(); }
-    public Object getValueAt(int rowIndex, int columnIndex) { return (feeds == null) ? null : feeds.get(rowIndex); }
+    public int getRowCount() { return 9; }
+    public Object getValueAt(int rowIndex, int columnIndex) { return sections[rowIndex][columnIndex]; }
     public boolean isCellEditable(int columnIndex, int rowIndex) { return true; }
     
         

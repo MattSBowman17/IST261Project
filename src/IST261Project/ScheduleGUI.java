@@ -5,8 +5,6 @@
  */
 package IST261Project;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.JFrame;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JScrollPane;
@@ -23,16 +21,21 @@ public class ScheduleGUI extends JFrame
         super("Interactive Table Cell Example");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(500, 300);
+        
+        ScheduleFeed[][] sections = new ScheduleFeed[9][5];
+        ScheduleFeed.fillSchedule(sections);
+        
+        ScheduleFeed.addSection(new ScheduleFeed("IST311", "Bowers","8:00", "MWF"),sections);
+        ScheduleFeed.addSection(new ScheduleFeed("IST301", "Maurer","10:10", "MW"),sections);
+        //sections[8][0] = new ScheduleFeed("IST261", "Xue","1:35", "Wednesday");
 
-        List feeds = new ArrayList();
-        feeds.add(new ScheduleFeed("IST311", "Bowers","10:30", "Monday"));
-        feeds.add(new ScheduleFeed("IST261", "Xue","1:35", "Wednesday"));
-
-        JTable table = new JTable(new ScheduleFeedTableModel(feeds));
+        JTable table = new JTable(new ScheduleFeedTableModel(sections));
         table.setDefaultRenderer(ScheduleFeed.class, new ScheduleFeedCellRenderer());
         table.setDefaultEditor(ScheduleFeed.class, new ScheduleFeedCellEditor());
         table.setRowHeight(60);
+        table.setShowGrid(true);
         add(new JScrollPane(table));
+        
   }
 
     public static void main(String args[]) {

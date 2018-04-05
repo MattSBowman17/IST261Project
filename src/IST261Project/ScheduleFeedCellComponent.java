@@ -14,7 +14,7 @@ import javax.swing.JTable;
  * @author Kyle
  */
 public class ScheduleFeedCellComponent extends JPanel{
-    ScheduleFeed feed;
+    ScheduleFeed sections;
     JLabel course;
     JLabel professor;
     JLabel time;
@@ -23,30 +23,30 @@ public class ScheduleFeedCellComponent extends JPanel{
     course = new JLabel();
     professor = new JLabel();
     time = new JLabel();
+    add(time);
     add(course);
     add(professor);
-    add(time);
+    
   }
   
   public ScheduleFeedCellComponent(String courseName, String professorName, String classTime) {
     course = new JLabel(courseName);
     professor = new JLabel(professorName);
     time = new JLabel(classTime);
+    add(time);
     add(course);
     add(professor);
-    add(time);
+    
   }
 
-  public void updateData(ScheduleFeed feed, boolean isSelected, JTable table) {
-    this.feed = feed;
-
-    course.setText("" + feed.courseName);
-    professor.setText("" + feed.professorName);
-    time.setText("" + feed.classTime);
-    if (isSelected) {
-      setBackground(table.getSelectionBackground());
-    }else{
-      setBackground(table.getBackground());
+  public void updateData(ScheduleFeed sections, boolean hasFocus, JTable table, int row, int column) {
+    this.sections = sections;
+    if(sections != null)
+    {
+    course.setText("" + sections.courseName);
+    professor.setText("" + sections.professorName);
+    time.setText("" + sections.classTime);
     }
+   
   }
 }

@@ -24,8 +24,8 @@ public class ScheduleFeedCellRenderer implements TableCellRenderer
 
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) 
     {
-        ScheduleFeed feed = (ScheduleFeed)value;
-        feedComponent.updateData(feed, isSelected, table);
+        ScheduleFeed sections = (ScheduleFeed)value;
+        feedComponent.updateData(sections, hasFocus, table, row, column);
         return feedComponent;
     }
 }

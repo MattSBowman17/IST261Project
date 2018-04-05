@@ -16,7 +16,9 @@ public class Professor {
 
     private String Profesor_Department;
     
-    private ArrayList<Timeslot> ProfessorOccupied;            //List of RoomtimeIDs that the professor is already teaching during //List of RoomtimeIDs that the professor is already teaching during
+    private ArrayList<Timeslot> ProfessorOccupied;            //List of RoomtimeIDs that the professor is already teaching during
+    
+    private int TotalCourseLoad;
 
     /**TODO: Create Professor Creation method. 
      * 
@@ -27,7 +29,9 @@ public class Professor {
     }
     Professor(int Professor_ID, int Professor_CourseLoad)
     {
+
         this.Professor_ID= Professor_ID;
+
         this.Professor_CourseLoad = Professor_CourseLoad;
     }
     

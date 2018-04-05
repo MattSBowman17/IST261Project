@@ -29,18 +29,18 @@ public class Schedule
     HashMap<RoomTime, ProfessorCourse> HMSection = new HashMap<>();
     
     //Occupied RoomTimes
-    ArrayList<RoomTime> ALRoomTOcc = new ArrayList<>();
+    private ArrayList<RoomTime> ALRoomTOcc = new ArrayList<>();
     //Avaliable RoomTimes
-    ArrayList<RoomTime> ALRoomTAva = new ArrayList<>();
+    private ArrayList<RoomTime> ALRoomTAva = new ArrayList<>();
     
     
-    ArrayList<Section> ALSection = new ArrayList<>();
-    ArrayList<ProfessorCourse> ALProfC = new ArrayList<>(); 
-    ArrayList<Room> ALRoom = new ArrayList<>();    
-    ArrayList<Course> ALCourse = new ArrayList<>();       
-    ArrayList<Professor> ALProf = new ArrayList<>();
-    ArrayList<Package> ALPack = new ArrayList<>();
-    ArrayList<ProfessorConstraint> ALPrCon = new ArrayList<>();
+    private ArrayList<Section> ALSection = new ArrayList<>();
+    private ArrayList<ProfessorCourse> ALProfC = new ArrayList<>(); 
+    private ArrayList<Room> ALRoom = new ArrayList<>();    
+    private ArrayList<Course> ALCourse = new ArrayList<>();       
+    private ArrayList<Professor> ALProf = new ArrayList<>();
+    private ArrayList<Package> ALPack = new ArrayList<>();
+    private ArrayList<ProfessorConstraint> ALPrCon = new ArrayList<>();
    
     
     
@@ -49,6 +49,7 @@ public class Schedule
         //myHMap.putIfAbsent(myRT, myPC);
         getData();
         createSections();
+//        scheduleProfessors();
 
       
     }
@@ -62,14 +63,19 @@ public class Schedule
         /*TODO: Use SQL to generate the data for the Array Lists of Roomtimes and ProfessorCourses 
          *  Right now it will only generate dummy data
          */
+        for(int i = 1; i <= 4; i++)
+        {
+           ALProf.add(new Professor(i, 9));
+        }
+        
         
         for(int i = 0; i < intTestingSize; i++)
         {
-            ALProfC.add(new ProfessorCourse(i, i+1, i));
+            ALProfC.add(new ProfessorCourse(i, myR.nextInt(4)+1, i, i));
+            System.out.println(ALProfC.get(i).getProfessor_ProfessorID());
             ALRoomTAva.add(new RoomTime(i, i, 1));
             ALCourse.add(new Course(i, ((myR.nextInt(4)+1)*10)));
-            ALRoom.add(new Room(i, 30, myR.nextInt(2-1)));
-            
+            ALRoom.add(new Room(i, 30, myR.nextInt(2-1)));        
         }
     }
     
@@ -122,14 +128,80 @@ public class Schedule
         }
     }
     
-    /**Step 3 of Scheduling.
-     * Uses professor data from professorCourse to add professors to all the
-     * courses
-     */
-    public void scheduleProfessors()
-    {
-        
-    }
+//    /**Step 3 of Scheduling.
+//     * Uses professor data from professorCourse to add professors to all the
+//     * courses
+//     * 
+//     * TODO:
+//     * Create copy of Schedule list. 
+//     * See what courses are scheduled in comparison to what professors can teach
+//     * Add professorID to section object
+//     * Hashmap to store
+//     * 
+//     * 
+//     */
+//    public void scheduleProfessors()
+//    {
+//        if(!ALSection.isEmpty())
+//        {
+//            
+//            int[] aIntSections = new int[ALCourse.size()];
+//            
+//            //Create list of courses and how many sections each course has
+//            for(int i = 0; i < ALSection.size();i++)
+//            {
+//                aIntSections[ALProfC.get(ALSection.get(i).getProfessorCourse_ProfessorCourseID()).getCourse_CourseID()]++;
+//            }              
+//            
+//            for(int i = 0; i < aIntSections.length; i++)
+//            {
+//                while(aIntSections[i] > 0)
+//                {
+//                    ALProfC.get(aIntSections[i]).getProfessorCourseID();
+//                    aIntSections[i]--;
+//                }
+//            }
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+////            for(int i = 0; i < ALSection.size(); i++)
+////            {    
+////                ArrayList<ProfessorCourse> ALTempCourse = new ArrayList<>();
+////                
+////                
+////                //Get a list of professorCourses that each 
+////                for(int j = 0; j < ALSection.size(); j++)
+////                {
+////                    if(ALProfC.get(ALSection.get(j).getProfessorCourse_ProfessorCourseID()).getCourse_CourseID() == aIntSections[i])
+////                    {
+////                        
+////                        ALTempCourse.add(ALProfC.get(ALSection.get(i).getProfessorCourse_ProfessorCourseID()));
+////                    }
+////                    
+////                }
+////                
+////                for(int j = 0; j < ALTempCourse.size(); j++)
+////                {
+////                    
+////                    
+////                    
+////                }
+////  
+////            }
+//        }
+//        else
+//        {
+//            
+//        }
+//    }
     
     /**Step 4 of Scheduling.
      * Uses data from professorConstraint to make sure that professors can

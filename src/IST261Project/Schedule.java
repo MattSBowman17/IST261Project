@@ -128,80 +128,46 @@ public class Schedule
         }
     }
     
-//    /**Step 3 of Scheduling.
-//     * Uses professor data from professorCourse to add professors to all the
-//     * courses
-//     * 
-//     * TODO:
-//     * Create copy of Schedule list. 
-//     * See what courses are scheduled in comparison to what professors can teach
-//     * Add professorID to section object
-//     * Hashmap to store
-//     * 
-//     * 
-//     */
-//    public void scheduleProfessors()
-//    {
-//        if(!ALSection.isEmpty())
-//        {
-//            
-//            int[] aIntSections = new int[ALCourse.size()];
-//            
-//            //Create list of courses and how many sections each course has
-//            for(int i = 0; i < ALSection.size();i++)
-//            {
-//                aIntSections[ALProfC.get(ALSection.get(i).getProfessorCourse_ProfessorCourseID()).getCourse_CourseID()]++;
-//            }              
-//            
-//            for(int i = 0; i < aIntSections.length; i++)
-//            {
-//                while(aIntSections[i] > 0)
-//                {
-//                    ALProfC.get(aIntSections[i]).getProfessorCourseID();
-//                    aIntSections[i]--;
-//                }
-//            }
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-////            for(int i = 0; i < ALSection.size(); i++)
-////            {    
-////                ArrayList<ProfessorCourse> ALTempCourse = new ArrayList<>();
-////                
-////                
-////                //Get a list of professorCourses that each 
-////                for(int j = 0; j < ALSection.size(); j++)
-////                {
-////                    if(ALProfC.get(ALSection.get(j).getProfessorCourse_ProfessorCourseID()).getCourse_CourseID() == aIntSections[i])
-////                    {
-////                        
-////                        ALTempCourse.add(ALProfC.get(ALSection.get(i).getProfessorCourse_ProfessorCourseID()));
-////                    }
-////                    
-////                }
-////                
-////                for(int j = 0; j < ALTempCourse.size(); j++)
-////                {
-////                    
-////                    
-////                    
-////                }
-////  
-////            }
-//        }
-//        else
-//        {
-//            
-//        }
-//    }
+    /**Step 3 of Scheduling.
+     * Uses professor data from professorCourse to add professors to all the
+     * courses
+     * 
+     * TODO:
+     * Create copy of Schedule list. 
+     * See what courses are scheduled in comparison to what professors can teach
+     * Add professorID to section object
+     * Hashmap to store
+     * 
+     * 
+     */
+    public void scheduleProfessors()
+    {
+        if(!ALSection.isEmpty())
+        {
+            HashMap<Section, ProfessorCourse> HMPC = new HashMap<>();
+            int[] aIntSections = new int[ALCourse.size()];
+            
+            //Create list of courses and how many sections each course has
+            for(int i = 0; i < ALSection.size();i++)
+            {
+                aIntSections[ALProfC.get(ALSection.get(i).getProfessorCourse_ProfessorCourseID()).getCourse_CourseID()]++;
+            }              
+            
+            for(int i = 0; i < aIntSections.length; i++)
+            {
+                while(aIntSections[i] > 0)
+                {
+                    ALProfC.get(aIntSections[i]).getProfessorCourseID();
+                    aIntSections[i]--;
+                }
+            }
+            
+        }
+        else
+        {
+            
+        }
+    }
     
     /**Step 4 of Scheduling.
      * Uses data from professorConstraint to make sure that professors can

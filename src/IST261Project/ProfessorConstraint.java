@@ -8,7 +8,7 @@ public class ProfessorConstraint {
 
     private int Time_Time_ID;
 
-    
+    // ProfessorConstraint Constructor
     public ProfessorConstraint(int Professor_Professor_ID, int Time_Time_ID)
     {
         this.Professor_Professor_ID = Professor_Professor_ID;

@@ -106,7 +106,7 @@ if (result == JOptionPane.OK_OPTION)
       if(strInPW.length() > 0)
         sbConnection.append("&password=" + strInPW);
 
-      JOptionPane.showMessageDialog(null, "Connection string = " + sbConnection.toString());
+      //JOptionPane.showMessageDialog(null, "Connection string = " + sbConnection.toString());
 
      /*
         parameters - 

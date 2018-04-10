@@ -5,6 +5,9 @@
  */
 package IST261Project;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JScrollPane;
@@ -22,11 +25,13 @@ public class ScheduleGUI extends JFrame
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(500, 300);
         
-        ScheduleFeed[][] sections = new ScheduleFeed[9][5];
-        ScheduleFeed.fillSchedule(sections);
         
-        ScheduleFeed.addSection(new ScheduleFeed("IST311", "Bowers","8:00", "MWF"),sections);
-        ScheduleFeed.addSection(new ScheduleFeed("IST301", "Maurer","10:10", "MW"),sections);
+        
+        ScheduleFeed[][] sections = new ScheduleFeed[9][5];
+        ScheduleFeed.getTimeSlots(sections);
+        
+        //ScheduleFeed.addSection(new ScheduleFeed("IST311", "Bowers","8:00", "MWF"),sections);
+        //ScheduleFeed.addSection(new ScheduleFeed("IST301", "Maurer","10:10", "MW"),sections);
         //sections[8][0] = new ScheduleFeed("IST261", "Xue","1:35", "Wednesday");
 
         JTable table = new JTable(new ScheduleFeedTableModel(sections));

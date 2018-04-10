@@ -15,6 +15,7 @@ import java.util.logging.Logger;
  *
  * @author Kyle
  */
+
 public class ScheduleFeed {
     String courseName;
     String professorName;

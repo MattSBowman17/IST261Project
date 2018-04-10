@@ -23,7 +23,7 @@ public class ScheduleGUI extends JFrame
         setSize(500, 300);
         
         
-        
+        //Add New 
         ScheduleFeed[][] sections = new ScheduleFeed[9][5];
         ScheduleFeed.getTimeSlots(sections);
         
@@ -37,6 +37,7 @@ public class ScheduleGUI extends JFrame
         table.setRowHeight(60);
         table.setShowGrid(true);
         add(new JScrollPane(table));
+ 
         
   }
 

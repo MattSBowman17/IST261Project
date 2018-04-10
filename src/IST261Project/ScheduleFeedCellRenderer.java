@@ -8,6 +8,7 @@ package IST261Project;
 import java.awt.Component;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
+
 /**
  *
  * @author Kyle

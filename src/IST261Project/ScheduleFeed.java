@@ -51,7 +51,7 @@ public class ScheduleFeed {
     {
         try 
         {
-            myS.connectToDatabase("istdata.bk.psu.edu","3306","kds5314","berks6599","ctg5117");
+            
             Statement stmt = myS.myConnection.createStatement();
             String sql = "Select * from timeslot";
             ResultSet myRS = stmt.executeQuery(sql);

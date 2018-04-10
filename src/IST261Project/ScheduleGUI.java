@@ -5,6 +5,7 @@
  */
 package IST261Project;
 
+import java.sql.SQLException;
 import javax.swing.JFrame;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JScrollPane;
@@ -16,22 +17,19 @@ import javax.swing.JTable;
  */
 public class ScheduleGUI extends JFrame
 {
-    public ScheduleGUI() 
+    public ScheduleGUI(ScheduleFeed[][] SFIn, MySQLDBConnector myS) throws ClassNotFoundException, SQLException 
     {
         super("Interactive Table Cell Example");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(500, 300);
-        
-        
-        //Add New 
-        ScheduleFeed[][] sections = new ScheduleFeed[9][5];
-        ScheduleFeed.getTimeSlots(sections);
-        
-        //ScheduleFeed.addSection(new ScheduleFeed("IST311", "Bowers","8:00", "MWF"),sections);
-        //ScheduleFeed.addSection(new ScheduleFeed("IST301", "Maurer","10:10", "MW"),sections);
-        //sections[8][0] = new ScheduleFeed("IST261", "Xue","1:35", "Wednesday");
 
-        JTable table = new JTable(new ScheduleFeedTableModel(sections));
+        ScheduleFeed.getTimeSlots(SFIn, myS);
+        
+        ScheduleFeed.addSection(new ScheduleFeed("IST311", "Bowers","08:00", "MWF"),SFIn);
+        ScheduleFeed.addSection(new ScheduleFeed("IST301", "Maurer","10:10", "MW"),SFIn);
+
+
+        JTable table = new JTable(new ScheduleFeedTableModel(SFIn));
         table.setDefaultRenderer(ScheduleFeed.class, new ScheduleFeedCellRenderer());
         table.setDefaultEditor(ScheduleFeed.class, new ScheduleFeedCellEditor());
         table.setRowHeight(60);
@@ -39,16 +37,5 @@ public class ScheduleGUI extends JFrame
         add(new JScrollPane(table));
  
         
-  }
-
-    public static void main(String args[]) {
- 
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ScheduleGUI().setVisible(true);
-            }
-        });
     }
-
-
 }

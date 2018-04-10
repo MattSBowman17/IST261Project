@@ -8,15 +8,13 @@ package IST261Project;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author Kyle
  */
 
-public class ScheduleFeed {
+public class SectionFeed {
     String courseName;
     String professorName;
     String classTime;
@@ -38,7 +36,7 @@ public class ScheduleFeed {
         
     
     
-    public ScheduleFeed(String courseName, String professorName, String classTime, String classDay) 
+    public SectionFeed(String courseName, String professorName, String classTime, String classDay) 
     {
         this.courseName = courseName;
         this.professorName = professorName;
@@ -47,7 +45,7 @@ public class ScheduleFeed {
     }
     
     
-    public static void getTimeSlots(ScheduleFeed[][] sectionTable, MySQLDBConnector myS) throws ClassNotFoundException, SQLException
+    public static void getTimeSlots(SectionFeed[][] sectionTable, MySQLDBConnector myS) throws ClassNotFoundException, SQLException
     {
         
             myS.connectToDatabase("istdata.bk.psu.edu","3306","kds5314","berks6599","ctg5117");
@@ -66,11 +64,11 @@ public class ScheduleFeed {
                 timeslots[i] = new Timeslot(myRS.getInt(1), myRS.getTime(2), myRS.getTime(3), timeSlotDays);
                 myRS.next();
             }
-            fillSchedule(sectionTable);
+            fillSection(sectionTable);
 
     }
     
-    public static void fillSchedule(ScheduleFeed[][] sectionTable)
+    public static void fillSection(SectionFeed[][] sectionTable)
     {
         for (int h = 0; h < timeslots.length; h++) 
         {
@@ -84,7 +82,7 @@ public class ScheduleFeed {
                         {
                             if(timeslots[h].getTime_Start().toString().substring(0, 5).equals(DayTimeSlot[i][j]))
                             {
-                                sectionTable[j][i] = new ScheduleFeed("", "", DayTimeSlot[i][j], "");
+                                sectionTable[j][i] = new SectionFeed("", "", DayTimeSlot[i][j], "");
                             }
                         }
                     }
@@ -100,12 +98,12 @@ public class ScheduleFeed {
 
 //        for (int i = 0; i < 9; i++) {
 //            for (int j = 0; j < 5; j++) {
-//                    sections[i][j] = new ScheduleFeed("", "", DayTimeSlot[j][i], ""); 
+//                    sections[i][j] = new SectionFeed("", "", DayTimeSlot[j][i], ""); 
 //            }
 //        }
     }
     
-    public static void addSection(ScheduleFeed course, ScheduleFeed[][] sectionTable){
+    public static void addSection(SectionFeed course, SectionFeed[][] sectionTable){
         char[] courseDays = course.classDay.toCharArray();
         for (int k = 0; k < courseDays.length; k++) {
             for (int i = 0; i < 5; i++) 
@@ -116,7 +114,7 @@ public class ScheduleFeed {
                     {
                         if(course.classTime.equals(DayTimeSlot[i][j]))
                         {
-                            sectionTable[j][i] = new ScheduleFeed(course.courseName, course.professorName, DayTimeSlot[i][j], days[i]);
+                            sectionTable[j][i] = new SectionFeed(course.courseName, course.professorName, DayTimeSlot[i][j], days[i]);
                         }
                     }
                 }

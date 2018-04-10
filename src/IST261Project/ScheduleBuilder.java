@@ -17,14 +17,20 @@ import java.util.logging.Logger;
 public class ScheduleBuilder {
     
     MySQLDBConnector mySQL = new MySQLDBConnector();
-    
-    public static void main(String[] args) {
+    SectionFeed[][] mySF = new SectionFeed[15][39];
+
+    public ScheduleBuilder() {
         try {
             mySQL.connectToDatabase("istdata.bk.psu.edu","3306","kds5314","berks6599","ctg5117");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ScheduleBuilder.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
+            new SectionGUI(mySF,mySQL).setVisible(true);
+        } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(ScheduleBuilder.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    
+    
+    public static void main(String[] args) {
+        ScheduleBuilder mySB = new ScheduleBuilder();
     }
 }

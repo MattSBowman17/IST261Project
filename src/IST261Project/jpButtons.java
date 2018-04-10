@@ -158,6 +158,7 @@ public class jpButtons extends javax.swing.JPanel
         };
         
 int result = JOptionPane.showConfirmDialog(null, inputs, "New Professor Info", JOptionPane.PLAIN_MESSAGE);
+
 if (result == JOptionPane.OK_OPTION) 
 {
    strProfessorID = jtfProfessorID.getText();
@@ -175,6 +176,7 @@ if (result == JOptionPane.OK_OPTION)
             + "Department   " + strDepartment + "\n"
     );
 } 
+
 else 
 {
     System.out.println("User canceled / closed the dialog, result = " + result);
@@ -187,6 +189,7 @@ strLName = jtfLName.getText();
 strCourseLoad = jtfCourseLoad.getText();
 strUsername = jtfUsername.getText();
 strDepartment = jtfDepartment.getText();
+
 try {
 myPS1 = myDBConnector.myConnection.prepareStatement(strSQL);
 myPS1.setString(1, strProfessorID);
@@ -197,7 +200,9 @@ myPS1.setString(5, strUsername);
 myPS1.setString(6, strDepartment);
 myPS1.executeUpdate();
 }
-catch (SQLException ex) {
+
+catch (SQLException ex) 
+{
             Logger.getLogger(jpButtons.class.getName()).log(Level.SEVERE, null, ex);
 }
     }//GEN-LAST:event_jbNewProfessorActionPerformed
@@ -227,6 +232,7 @@ catch (SQLException ex) {
         };
         
 int result = JOptionPane.showConfirmDialog(null, inputs, "New Section Info", JOptionPane.PLAIN_MESSAGE);
+
 if (result == JOptionPane.OK_OPTION) 
 {
    strSectionID = jtfSectionID.getText();
@@ -240,6 +246,7 @@ if (result == JOptionPane.OK_OPTION)
             + "SectionNumber    "  + strSectionNumber + "\n"
     );
 } 
+
 else 
 {
     System.out.println("User canceled / closed the dialog, result = " + result);
@@ -250,6 +257,7 @@ strSectionID = jtfSectionID.getText();
 strProfessorCourseID = jcbProfessorCourseID.getActionCommand();
 strRoomTimeID = jcbRoomTimeID.getActionCommand();
 strSectionNumber = jtfSectionNumber.getText();
+
 try {
 myPS1 = myDBConnector.myConnection.prepareStatement(strSQL);
 myPS1.setString(1, strSectionID);
@@ -258,7 +266,9 @@ myPS1.setString(3, strRoomTimeID);
 myPS1.setString(4, strSectionNumber);
 myPS1.executeUpdate();
 }
-catch (SQLException ex) {
+
+catch (SQLException ex) 
+{
             Logger.getLogger(jpButtons.class.getName()).log(Level.SEVERE, null, ex);
 }
     }//GEN-LAST:event_jbAddSectionActionPerformed
@@ -296,6 +306,7 @@ catch (SQLException ex) {
         };
         
 int result = JOptionPane.showConfirmDialog(null, inputs, "New Course Info", JOptionPane.PLAIN_MESSAGE);
+
 if (result == JOptionPane.OK_OPTION) 
 {
    strCourseID = jtfCourseID.getText();
@@ -313,6 +324,7 @@ if (result == JOptionPane.OK_OPTION)
             + "Level   " + strLevel + "\n"
     );
 } 
+
 else 
 {
     System.out.println("User canceled / closed the dialog, result = " + result);
@@ -325,6 +337,7 @@ strEstStudents = jtfEstStudents.getText();
 strName = jtfName.getText();
 strMajor = jtfMajor.getText();
 strLevel = jtfLevel.getText();
+
 try {
 myPS1 = myDBConnector.myConnection.prepareStatement(strSQL);
 myPS1.setString(1, strCourseID);
@@ -335,7 +348,9 @@ myPS1.setString(5, strMajor);
 myPS1.setString(6, strLevel);
 myPS1.executeUpdate();
 }
-catch (SQLException ex) {
+
+catch (SQLException ex) 
+{
             Logger.getLogger(jpButtons.class.getName()).log(Level.SEVERE, null, ex);
 }
     }//GEN-LAST:event_jbNewClassActionPerformed

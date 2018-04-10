@@ -1,5 +1,7 @@
 package IST261Project;
 
+import java.util.ArrayList;
+
 public class Professor {
 
     private int Professor_ID;
@@ -13,7 +15,19 @@ public class Professor {
     private String Professor_Username;
 
     private String Profesor_Department;
+    
+    private ArrayList<Timeslot> ProfessorOccupied;            //List of RoomtimeIDs that the professor is already teaching during
 
+    /**TODO: Create Professor Creation method. 
+     * 
+     * 
+     */
+    
+    Professor(int Professor_ID, int Professor_CoruseLoad)
+    {
+        
+    }
+    
     /**
      * @return the Professor_ID
      */
@@ -96,6 +110,30 @@ public class Professor {
      */
     public void setProfesor_Department(String Profesor_Department) {
         this.Profesor_Department = Profesor_Department;
+    }
+    
+    /**Input a timeslot into the professor's personal schedule ArrayList. 
+     * 
+     * 
+     * @param TSlotIn Timeslot to be put into professor Schedule
+     * @return True if timeslot can be entered, false if the timeslot is occupied
+     * @Author Chris Geissler
+     */
+    public boolean setProfessorOccupied(Timeslot TSlotIn)
+    {
+        boolean bOccupied = true;
+        
+        if(ProfessorOccupied.contains(TSlotIn))
+        {
+            bOccupied = false;
+        }
+        
+        else
+        {
+            ProfessorOccupied.add(TSlotIn);
+        }
+        
+        return bOccupied;
     }
     
 }

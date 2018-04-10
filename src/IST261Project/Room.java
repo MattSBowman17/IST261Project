@@ -12,6 +12,13 @@ public class Room {
 
     private int Room_Size;
 
+    Room(int Room_ID, int Room_Size, int Package_Package_ID)
+    {
+        this.Room_ID = Room_ID;
+        this.Room_Size = Room_Size;
+        this.Package_Package_ID = Package_Package_ID;
+    }
+    
     /**
      * @return the Room_ID
      */

@@ -2,7 +2,7 @@ package IST261Project;
 
 public class ProfessorCourse {
 
-    private String ProfessorCourseID;
+    private int ProfessorCourseID;
 
     private int Professor_ProfessorID;
 
@@ -10,29 +10,16 @@ public class ProfessorCourse {
 
     private int Package_Package_ID;
     
-    public ProfessorCourse(int Professor_ProfessorID, int Course_CourseID, int Package_Package_ID)
+
+    public ProfessorCourse(int ProfessorCourseID, int Professor_ProfessorID, int Course_CourseID, int Package_Package_ID)
+
     {
+        this.ProfessorCourseID = ProfessorCourseID;
         this.Professor_ProfessorID = Professor_ProfessorID;
         this.Course_CourseID = Course_CourseID;
         this.Package_Package_ID = Package_Package_ID;
     }
     
-    /**
-     * @return the ProfessorCourseID
-     */
-    public String getProfessorCourseID()
-    {
-        return ProfessorCourseID;
-    }
-
-    /**
-     * @param ProfessorCourseID the ProfessorCourseID to set
-     */
-    public void setProfessorCourseID(String ProfessorCourseID)
-    {
-        this.ProfessorCourseID = ProfessorCourseID;
-    }
-
     /**
      * @return the Professor_ProfessorID
      */
@@ -80,6 +67,20 @@ public class ProfessorCourse {
     public void setPackage_Package_ID(int Package_Package_ID) 
     {
         this.Package_Package_ID = Package_Package_ID;
+    }
+
+    /**
+     * @return the ProfessorCourseID
+     */
+    public int getProfessorCourseID() {
+        return ProfessorCourseID;
+    }
+
+    /**
+     * @param ProfessorCourseID the ProfessorCourseID to set
+     */
+    public void setProfessorCourseID(int ProfessorCourseID) {
+        this.ProfessorCourseID = ProfessorCourseID;
     }
     
     

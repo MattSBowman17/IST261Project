@@ -23,7 +23,7 @@ public class ScheduleGUI extends JFrame
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(500, 300);
 
-        ScheduleFeed.getTimeSlots(SFIn, myS);
+//      ScheduleFeed.getTimeSlots(SFIn, myS);
         
         ScheduleFeed.addSection(new ScheduleFeed("IST311", "Bowers","08:00", "MWF"),SFIn);
         ScheduleFeed.addSection(new ScheduleFeed("IST301", "Maurer","10:10", "MW"),SFIn);

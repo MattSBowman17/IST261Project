@@ -18,13 +18,13 @@ public class SectionFeedTableModel extends AbstractTableModel
 {
     String[] days = new String[]{"Monday","Tuesday","Wednesday","Thursday","Friday"};
     String[][] timeSlot = new String[][]{
-        {"08:00","09:05","010:10","11:15","13:25","14:30","15:45","16:40","18:00"},
-        {"09:05","10:35","13:35","15:05","16:35","18:00","","",""},
         {"08:00","09:05","10:10","11:15","13:25","14:30","15:45","16:40","18:00"},
-        {"09:05","10:35","13:35","15:05","16:35","18:00","","",""},
-        {"08:00","09:05","10:10","11:15","13:25","14:30","15:45","16:40",""}
+        {"09:05","10:35","13:35","15:05","16:35","18:00"},
+        {"08:00","09:05","10:10","11:15","13:25","14:30","15:45","16:40","18:00"},
+        {"09:05","10:35","13:35","15:05","16:35","18:00"},
+        {"08:00","09:05","10:10","11:15","13:25","14:30","15:45","16:40"}
     };
-    String[] columnNames;
+    String[] columnNames = new String[39];
 
     SectionFeed[][] sections = new SectionFeed[9][5];
     
@@ -32,14 +32,22 @@ public class SectionFeedTableModel extends AbstractTableModel
     public SectionFeedTableModel(SectionFeed[][] sections) 
     {
         this.sections = sections;
+        int counter = 1;
+        for (int i = 0; i < days.length; i++) {
+            for (int j = 0; j < timeSlot[i].length; j++) {
+                columnNames[counter] = "<html>" + days[i] + "<br>"+ timeSlot[i][j] + "</html>";
+                counter++;
+            }
+            
+        }
     }
     
     
 
     
     public Class getColumnClass(int columnIndex) { return SectionFeed.class; }
-    public int getColumnCount() { return DayTimeSlot.length; }
-    public String getColumnName(int columnIndex) { return DayTimeSlot[columnIndex]; }
+    public int getColumnCount() { return columnNames.length; }
+    public String getColumnName(int columnIndex) { return columnNames[columnIndex]; }
     public int getRowCount() { return 15; }
     public Object getValueAt(int rowIndex, int columnIndex) { return sections[rowIndex][columnIndex]; }
     public boolean isCellEditable(int columnIndex, int rowIndex) { return true; }

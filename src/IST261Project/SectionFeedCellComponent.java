@@ -13,13 +13,13 @@ import javax.swing.JTable;
  *
  * @author Kyle
  */
-public class ScheduleFeedCellComponent extends JPanel{
-    ScheduleFeed sections;
+public class SectionFeedCellComponent extends JPanel{
+    SectionFeed sections;
     JLabel course;
     JLabel professor;
     JLabel time;
 
-  public ScheduleFeedCellComponent() {
+  public SectionFeedCellComponent() {
     course = new JLabel();
     professor = new JLabel();
     time = new JLabel();
@@ -29,7 +29,7 @@ public class ScheduleFeedCellComponent extends JPanel{
     
   }
   
-  public ScheduleFeedCellComponent(String courseName, String professorName, String classTime) {
+  public SectionFeedCellComponent(String courseName, String professorName, String classTime) {
     course = new JLabel(courseName);
     professor = new JLabel(professorName);
     time = new JLabel(classTime);
@@ -39,7 +39,7 @@ public class ScheduleFeedCellComponent extends JPanel{
     
   }
 
-  public void updateData(ScheduleFeed sections, boolean hasFocus, JTable table, int row, int column) {
+  public void updateData(SectionFeed sections, boolean hasFocus, JTable table, int row, int column) {
     this.sections = sections;
     if(sections != null)
     {

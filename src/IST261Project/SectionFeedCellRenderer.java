@@ -13,18 +13,18 @@ import javax.swing.table.TableCellRenderer;
  *
  * @author Kyle
  */
-public class ScheduleFeedCellRenderer implements TableCellRenderer
+public class SectionFeedCellRenderer implements TableCellRenderer
 {
-    ScheduleFeedCellComponent feedComponent;
+    SectionFeedCellComponent feedComponent;
 
-    public ScheduleFeedCellRenderer() 
+    public SectionFeedCellRenderer() 
     {
-        feedComponent = new ScheduleFeedCellComponent();
+        feedComponent = new SectionFeedCellComponent();
     }
 
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) 
     {
-        ScheduleFeed sections = (ScheduleFeed)value;
+        SectionFeed sections = (SectionFeed)value;
         feedComponent.updateData(sections, hasFocus, table, row, column);
         return feedComponent;
     }

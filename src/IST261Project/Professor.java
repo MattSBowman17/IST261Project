@@ -2,39 +2,12 @@ package IST261Project;
 
 import java.util.ArrayList;
 
-public class Professor {
+public class Professor
+{
 
-    /**
-     * @return the TotalCourseLoad
-     */
-    public int getTotalCourseLoad() {
-        return TotalCourseLoad;
-    }
 
-    /**
-     * @param TotalCourseLoad the TotalCourseLoad to set
-     */
-    public void setTotalCourseLoad(int TotalCourseLoad) {
-        this.TotalCourseLoad = TotalCourseLoad;
-    }
 
-    /**
-     * @return the CoursesEnrolled
-     */
-    public int getCoursesEnrolled() {
-        return CoursesEnrolled;
-    }
 
-   
-    public void increaseCoursesEnrolled() 
-    {
-        CoursesEnrolled++;
-    }
-    
-    public void decreaseCoursesEnrolled() 
-    {
-        CoursesEnrolled--;
-    }
     
 
     private int Professor_ID;
@@ -51,8 +24,6 @@ public class Professor {
     
     private ArrayList<Timeslot> ProfessorOccupied;            //List of RoomtimeIDs that the professor is already teaching during
     
-    private int TotalCourseLoad;
-    
     private int CoursesEnrolled;
 
     /**TODO: Create Professor Creation method. 
@@ -60,11 +31,9 @@ public class Professor {
      * 
      */
   
-    public Professor() {
-    }
     Professor(int Professor_ID, int Professor_CourseLoad)
     {
-
+        CoursesEnrolled = 0;
         this.Professor_ID= Professor_ID;
 
         this.Professor_CourseLoad = Professor_CourseLoad/3;
@@ -176,6 +145,24 @@ public class Professor {
         }
         
         return bOccupied;
+    }
+    
+        /**
+     * @return the CoursesEnrolled
+     */
+    public int getCoursesEnrolled() {
+        return CoursesEnrolled;
+    }
+
+   
+    public void increaseCoursesEnrolled() 
+    {
+        CoursesEnrolled++;
+    }
+    
+    public void decreaseCoursesEnrolled() 
+    {
+        CoursesEnrolled--;
     }
     
 }

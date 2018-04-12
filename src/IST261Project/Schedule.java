@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package IST261Project;
+import static java.lang.Math.random;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -49,7 +50,7 @@ public class Schedule
         //myHMap.putIfAbsent(myRT, myPC);
         getData();
         createSections();
-        //scheduleProfessors();
+        scheduleProfessors();
 
       
     }
@@ -115,96 +116,101 @@ public class Schedule
             while(intSectionSize> intCapacity)
             {
                intNumSections++;
-               intSectionSize = intSectionSize/intNumSections;
+               intSectionSize = intSectionSize/intNumSections;               
             }
+            
             while(intNumSections > 0)
             { 
                 intSectionID++;
                 
-                //Then we search through professorCourse to find the ProfCs that can teach a section
-                for(int j = 0; j < ALProfC.size(); j++)
-                {
-                    if(ALProfC.get(j).getCourse_CourseID() == i)
-                    {
-                        if(ALProf.get(ALProfC.get(j).getProfessor_ProfessorID()).getCoursesEnrolled() < ALProf.get(ALProfC.get(j).getProfessor_ProfessorID()).getTotalCourseLoad())
-                        {
-                            ALSection.add(new Section(intSectionID, intSectionSize, ALProfC.get(i).getCourse_CourseID()));
-                            ALProf.get(ALProfC.get(j).getProfessor_ProfessorID()).increaseCoursesEnrolled();
-                        }
-                        else
-                        {
+                ALSection.add(new Section(intSectionID, intSectionSize, ALCourse.get(i).getCourse_ID()));
                 
-                                       
-                        }
-                    }
-                }
-                
-                 
                 intNumSections--;
             }
         }
+        
         if(bDebugging)
         {
             for(int i = 0; i < ALSection.size(); i++)
             {
-                System.out.println("Section ID: " + ALSection.get(i).getSection_ID() + ", " + ALSection.get(i).getSectNumStudents() + ", " + ALSection.get(i).getProfessorCourse_ProfessorCourseID());
+                System.out.println("Section ID: " + ALSection.get(i).getSection_ID() + ", " + ALSection.get(i).getSectNumStudents() + ", " + ALSection.get(i).getIntCourse());
             }
         }
     }
     
-//    /**Step 3 of Scheduling.
-//     * Uses professor data from professorCourse to add professors to all the
-//     * courses
-//     * 
-//     * TODO:
-//     * Create copy of Schedule list. 
-//     * See what courses are scheduled in comparison to what professors can teach
-//     * Add professorID to section object
-//     * Hashmap to store
-//     * 
-//     * 
-//     */
-//    public void scheduleProfessors()
-//    {
-//        if(!ALSection.isEmpty())
-//        {
-//            HashMap<Section, ProfessorCourse> HMProfC = new HashMap<>();
-//            int[] aIntSections = new int[ALCourse.size()];
-//            
-//            //Create list of courses and how many sections each course has
-//            for(int i = 0; i < ALSection.size();i++)
-//            {
-//                aIntSections[ALProfC.get(ALSection.get(i).getProfessorCourse_ProfessorCourseID()).getCourse_CourseID()]++;
-//                //System.out.println(aIntSections[i]);
-//            }
-//            
-//            for(int i = 0; i< aIntSections.length; i++)
-//            {
-//                System.out.println(aIntSections[i]);
-//            }
-//                        
-//            for(int i = 0; i < aIntSections.length; i++)
-//            {
-//                ArrayList<ProfessorCourse> ALTempPC = new ArrayList<>();
-//                
-//                for(int j = 0; j < ALProfC.size(); j++)
-//                {
-//                    
-//                }
-//                
-//                while(aIntSections[i] > 0)
-//                {
-//                    aIntSections[i]--;
-//                }
-//                
-//            }
-//            
-//        }
-//        else
-//        {
-//            
-//        }
-//    }
+    /**Step 3 of Scheduling.
+     * Uses professor data from professorCourse to add professors to all the
+     * courses
+     * 
+     * TODO:
+     * Create copy of Schedule list. 
+     * See what courses are scheduled in comparison to what professors can teach
+     * Add professorID to section object
+     * Hashmap to store
+     * 
+     * 
+     */
+    public void scheduleProfessors()
+    {
+        HashMap<ProfessorCourse, Section> HMPC = new HashMap<>();
+       
+        
+        
+        if(!ALSection.isEmpty())
+        {
+            for(int i = 0; i < ALSection.size(); i++)
+            {
+                ArrayList<ProfessorCourse> PCTemp = new ArrayList<>();
+                
+                //Create an arraylist of professors who can teach a certain class
+                
+                for(int j = 0; j <ALProfC.size(); j++)
+                {
+                    if(ALSection.get(i).getIntCourse() == ALProfC.get(j).getCourse_CourseID())
+                    {
+                        PCTemp.add(ALProfC.get(j));
+                        System.out.println(PCTemp.size());
+                    }
+                }
+                
+                if(!PCTemp.isEmpty())
+                {
+                    while(!PCTemp.isEmpty())
+                    {
+                        ProfessorCourse RandomPC = getRandomPC(PCTemp);
+                        if(ALProf.get(RandomPC.getProfessor_ProfessorID()).getCoursesEnrolled() < ALProf.get(RandomPC.getProfessor_ProfessorID()).getProfessor_CourseLoad()) 
+                        {
+                            ALSection.get(i).setProfessorCourse_ProfessorCourseID(RandomPC.getProfessorCourseID());
+                            ALProf.get(RandomPC.getProfessor_ProfessorID()).increaseCoursesEnrolled();
+                            System.out.println("Sechuled properly");
+                            break;
+                        }
+                        else if(PCTemp.size() == 1)
+                        {
+                            ALSection.get(i).setProfessorCourse_ProfessorCourseID(RandomPC.getProfessorCourseID());
+                            ALProf.get(RandomPC.getProfessor_ProfessorID()).increaseCoursesEnrolled();
+                            ALSection.get(i).setProblem();
+                            System.out.println("Got to last Issue");
+                            PCTemp.remove(RandomPC);
+                            break;
+                        }
+                        else
+                        {
+                            PCTemp.remove(RandomPC);
+                        }
+                    }
+                }
+                else
+                {
+                    ALSection.get(i).setProblem();
+                }
+            }   
+        }
+        else
+        {
+            System.out.println("Need sections");
+        }
+    }
     
     /**Step 4 of Scheduling.
      * Uses data from professorConstraint to make sure that professors can
@@ -213,7 +219,7 @@ public class Schedule
      */
     public void scheduleTimes()
     {
-        
+         
     }
     
     /**Step 5 of Scheduling. 
@@ -232,6 +238,20 @@ public class Schedule
     public static void main(String[] args) 
     {
         Schedule mySchedule = new Schedule();
+    }
+    
+    public ProfessorCourse getRandomPC(ArrayList<ProfessorCourse> ALTemp)
+    {
+	int index = myR.nextInt(ALTemp.size());
+	return ALTemp.get(index);
+	    
+    }
+    
+    public RoomTime getRandomRT(ArrayList<RoomTime> ALTemp)
+    {
+	int index = myR.nextInt(ALTemp.size());
+	return ALTemp.get(index);
+	    
     }
     
     //For sort, use (putIfAbsent(K key, V value)) to determine if a key already has a value stored at it. 

@@ -11,15 +11,25 @@ public class Section {
     private int Section_SectionNumber;
     
     private int SectNumStudents;
-
+    
+    private int intCourse;
+    
+    private boolean bProblem = false;
     
    
     //Section Constructor
-    public Section(int Section_ID, int SectNumStudents, int ProfessorCourse_ProfessorCourseID)
+//    public Section(int Section_ID, int SectNumStudents, int ProfessorCourse_ProfessorCourseID)
+//    {
+//        this.Section_ID = Section_ID;
+//        this.SectNumStudents = SectNumStudents;
+//        this.ProfessorCourse_ProfessorCourseID = ProfessorCourse_ProfessorCourseID;
+//    }
+    
+    public Section(int Section_ID, int SectNumStudents, int intCourse)
     {
         this.Section_ID = Section_ID;
         this.SectNumStudents = SectNumStudents;
-        this.ProfessorCourse_ProfessorCourseID = ProfessorCourse_ProfessorCourseID;
+        this.intCourse = intCourse; 
     }
     /**
      * @return the Section_ID
@@ -91,5 +101,22 @@ public class Section {
         this.SectNumStudents = SectNumStudents;
     }
 
-    
+    /**
+     * @return the intCourse
+     */
+    public int getIntCourse() {
+        return intCourse;
+    }
+
+    /**
+     * @param intCourse the intCourse to set
+     */
+    public void setIntCourse(int intCourse) {
+        this.intCourse = intCourse;
+    }
+
+    public void setProblem()
+    {
+        bProblem = !bProblem;
+    }
 }

@@ -15,10 +15,11 @@ import java.sql.Statement;
  */
 
 public class SectionFeed {
-    String courseName;
-    String professorName;
-    String classTime;
-    String classDay;
+    String firstLine;
+    String secondLine;
+    String thirdLine;
+    String fourthLine;
+    String Output;
     static Room[] rooms;
     static String[][] DayTimeSlot = new String[][]{
         {"08:00","09:05","10:10","11:15","13:25","14:30","15:45","16:40","18:00"},
@@ -38,10 +39,23 @@ public class SectionFeed {
     
     public SectionFeed(String courseName, String professorName, String classTime, String classDay) 
     {
-        this.courseName = courseName;
-        this.professorName = professorName;
-        this.classTime = classTime;
-        this.classDay = classDay;
+        this.firstLine = courseName;
+        this.secondLine = professorName;
+        this.thirdLine = classTime;
+        this.fourthLine = classDay;
+        setOutput();
+    }
+    
+    public SectionFeed(String buildingName, int roomNumber, int seats, int roomPackage) 
+    {
+        this.firstLine = buildingName + " " + String.valueOf(roomNumber);
+        this.secondLine = "Seats:" + String.valueOf(seats);
+        this.thirdLine = "Package:" + String.valueOf(roomPackage);
+        setOutput();
+    }
+    
+    private void setOutput(){
+        Output = "<html>" + firstLine + "<br>" + secondLine + "<br>" + thirdLine + "</html>";
     }
     
     public static void getRooms(SectionFeed[][] sectionTable, MySQLDBConnector myS) throws SQLException
@@ -59,14 +73,12 @@ public class SectionFeed {
         myRS.first();
         rooms = new Room[RSLength];
         for (int i = 0; i < RSLength; i++) {
-            rooms[i] = new Room(myRS.getString(1), myRS.getInt(3), myRS.getInt(4), myRS.getInt(2));
+            rooms[i] = new Room(myRS.getString(1), myRS.getInt(4), myRS.getInt(2), myRS.getInt(3));
             myRS.next();
         }
         for (int i = 0; i < rooms.length; i++) {
-            sectionTable[i][0] = new SectionFeed(String.valueOf(rooms[i].getRoom_Size()),
-                    String.valueOf(rooms[i].getRoom_Number()),
-                    rooms[i].getBuilding_Name(), "");
-            for (int j = 1; j < 39; j++) {
+            sectionTable[i][0] = new SectionFeed(rooms[i].getBuilding_Name(), rooms[i].getRoom_Number(), rooms[i].getRoom_Size(), rooms[i].getPackage_Package_ID());
+            for (int j = 1; j < 43; j++) {
                 sectionTable[i][j] = new SectionFeed("","","","");
             }
         }
@@ -133,7 +145,7 @@ public class SectionFeed {
     
     
     public static void addSection(SectionFeed course, SectionFeed[][] sectionTable){
-        char[] courseDays = course.classDay.toCharArray();
+        char[] courseDays = course.fourthLine.toCharArray();
         for (int k = 0; k < courseDays.length; k++) {
             for (int i = 0; i < 5; i++) 
             { 
@@ -141,9 +153,9 @@ public class SectionFeed {
                 {
                     for (int j = 0; j < 9; j++) 
                     {
-                        if(course.classTime.equals(DayTimeSlot[i][j]))
+                        if(course.thirdLine.equals(DayTimeSlot[i][j]))
                         {
-                            sectionTable[j][i] = new SectionFeed(course.courseName, course.professorName, DayTimeSlot[i][j], days[i]);
+                            sectionTable[j][i] = new SectionFeed(course.firstLine, course.secondLine, DayTimeSlot[i][j], days[i]);
                         }
                     }
                 }

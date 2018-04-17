@@ -296,12 +296,12 @@ public class Schedule
         {
              for(int j = 0; j< TSTest1.size(); j++)
              {
-                   if(TSTest1.get(i).equals(TSTest2.get(j)))
-                            {
-                                TSTest1.remove(j);
-                            }       
-                        }
-                    }        
+                   if(TSTest1.get(j).equals(TSTest2.get(i)))
+                    {
+                        TSTest1.remove(j);
+                    }       
+             }
+        }        
             System.out.println(TSTest1.size() );      
         
     }

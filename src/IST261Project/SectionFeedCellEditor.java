@@ -14,18 +14,18 @@ import javax.swing.table.TableCellEditor;
  *
  * @author Kyle
  */
-public class ScheduleFeedCellEditor extends AbstractCellEditor implements TableCellEditor
+public class SectionFeedCellEditor extends AbstractCellEditor implements TableCellEditor
 {
-    ScheduleFeedCellComponent feedComponent;
+    SectionFeedCellComponent feedComponent;
 
-    public ScheduleFeedCellEditor() 
+    public SectionFeedCellEditor() 
     {
-        feedComponent = new ScheduleFeedCellComponent();
+        feedComponent = new SectionFeedCellComponent();
     }
 
     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) 
     {
-        ScheduleFeed sections = (ScheduleFeed)value;
+        SectionFeed sections = (SectionFeed)value;
         feedComponent.updateData(sections, false, table, row, column);
         return feedComponent;
     }

@@ -11,8 +11,8 @@ public class Section {
     private int Section_SectionNumber;
     
     private int SectNumStudents;
-
     
+      
    
     //Section Constructor
     public Section(int Section_ID, int SectNumStudents, int ProfessorCourse_ProfessorCourseID)

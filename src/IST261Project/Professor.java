@@ -5,11 +5,6 @@ import java.util.ArrayList;
 public class Professor
 {
 
-
-
-
-    
-
     private int Professor_ID;
 
     private String Professor_FName;
@@ -145,6 +140,11 @@ public class Professor
         }
         
         return bOccupied;
+    }
+    
+    public ArrayList<Timeslot> getProfessorOccupied()
+    {
+        return ProfessorOccupied;
     }
     
         /**

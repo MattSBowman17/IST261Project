@@ -4,9 +4,10 @@
  * and open the template in the editor.
  */
 package IST261Project;
-import static java.lang.Math.random;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Random;
 
 
@@ -34,7 +35,7 @@ public class Schedule
     //Avaliable RoomTimes
     private ArrayList<RoomTime> ALRoomTAva = new ArrayList<>();
     
-    
+    private ArrayList<Timeslot> ALTimeS = new ArrayList<>();
     private ArrayList<Section> ALSection = new ArrayList<>();
     private ArrayList<ProfessorCourse> ALProfC = new ArrayList<>(); 
     private ArrayList<Room> ALRoom = new ArrayList<>();    
@@ -72,23 +73,19 @@ public class Schedule
         
         for(int i = 0; i < intTestingSize; i++)
         {
+            ALTimeS.add(new Timeslot(i));
             ALProfC.add(new ProfessorCourse(i, myR.nextInt(3), i, i));
-            System.out.println(ALProfC.get(i).getProfessor_ProfessorID());
+            //System.out.println(ALProfC.get(i).getProfessor_ProfessorID());
             ALRoomTAva.add(new RoomTime(i, i, 1));
+            ALRoomTAva.add(new RoomTime(i+10, i, 2));
             ALCourse.add(new Course(i, ((myR.nextInt(4)+1)*10)));
-            ALRoom.add(new Room(i, 30, myR.nextInt(2-1)));        
+            ALRoom.add(new Room(i, 30, myR.nextInt(2-1)));
+            
+            
+
         }
     }
     
-//    /**
-//     * 
-//     * 
-//     * @return True if the section can be added to HashMap 
-//     */
-//    public boolean addSection()
-//    {
-//        return true;
-//    }
     
     /**createSections.
      * Stage 2 of Scheduling. 
@@ -133,7 +130,7 @@ public class Schedule
         {
             for(int i = 0; i < ALSection.size(); i++)
             {
-                System.out.println("Section ID: " + ALSection.get(i).getSection_ID() + ", " + ALSection.get(i).getSectNumStudents() + ", " + ALSection.get(i).getIntCourse());
+                //System.out.println("Section ID: " + ALSection.get(i).getSection_ID() + ", " + ALSection.get(i).getSectNumStudents() + ", " + ALSection.get(i).getIntCourse());
             }
         }
     }
@@ -142,20 +139,11 @@ public class Schedule
      * Uses professor data from professorCourse to add professors to all the
      * courses
      * 
-     * TODO:
-     * Create copy of Schedule list. 
-     * See what courses are scheduled in comparison to what professors can teach
-     * Add professorID to section object
-     * Hashmap to store
-     * 
-     * 
      */
     public void scheduleProfessors()
     {
-        HashMap<ProfessorCourse, Section> HMPC = new HashMap<>();
+        //HashMap<ProfessorCourse, Section> HMPC = new HashMap<>();
        
-        
-        
         if(!ALSection.isEmpty())
         {
             for(int i = 0; i < ALSection.size(); i++)
@@ -169,7 +157,7 @@ public class Schedule
                     if(ALSection.get(i).getIntCourse() == ALProfC.get(j).getCourse_CourseID())
                     {
                         PCTemp.add(ALProfC.get(j));
-                        System.out.println(PCTemp.size());
+                        //System.out.println(PCTemp.size());
                     }
                 }
                 
@@ -182,7 +170,7 @@ public class Schedule
                         {
                             ALSection.get(i).setProfessorCourse_ProfessorCourseID(RandomPC.getProfessorCourseID());
                             ALProf.get(RandomPC.getProfessor_ProfessorID()).increaseCoursesEnrolled();
-                            System.out.println("Sechuled properly");
+                            //System.out.println("Sechuled properly");
                             break;
                         }
                         else if(PCTemp.size() == 1)
@@ -190,7 +178,7 @@ public class Schedule
                             ALSection.get(i).setProfessorCourse_ProfessorCourseID(RandomPC.getProfessorCourseID());
                             ALProf.get(RandomPC.getProfessor_ProfessorID()).increaseCoursesEnrolled();
                             ALSection.get(i).setProblem();
-                            System.out.println("Got to last Issue");
+                            //System.out.println("Over-Scheduled");
                             PCTemp.remove(RandomPC);
                             break;
                         }
@@ -215,11 +203,62 @@ public class Schedule
     /**Step 4 of Scheduling.
      * Uses data from professorConstraint to make sure that professors can
      * work at that given timeslot
-     * 
+     * ALProf.get(ALProfC.get(ALSection.get(i).getProfessorCourse_ProfessorCourseID()).getProfessor_ProfessorID())
      */
     public void scheduleTimes()
     {
-         
+        if(!ALSection.isEmpty())
+        {
+            HashMap<Professor, ArrayList<Timeslot> > HMProfTS = new HashMap<>();
+            
+            
+            /*
+                HashMap of all professors and available timeslots. Assuming from the start that they have equal timeslots
+            */
+            for(int i = 0; i < ALProf.size(); i++)
+            {
+                ArrayList<Timeslot> ALTemp = new ArrayList<>();
+                ALTemp.addAll(ALTimeS);
+                HMProfTS.putIfAbsent(ALProf.get(i), ALTemp);
+            }
+            
+            /*
+                Removing Constraints from each professor's list of avaliable times
+            */
+            Iterator it = HMProfTS.entrySet().iterator();
+            while (it.hasNext())
+            {
+                HashMap.Entry pair = (HashMap.Entry)it.next();
+                Professor tProf = (Professor) pair.getKey();
+                ArrayList tSlot = (ArrayList) pair.getValue();
+                
+                if(tSlot.size() > 0)
+                {
+                    ArrayList tUNAv = tProf.getProfessorOccupied();
+                    for(int i = 0; i < tUNAv.size(); i++)
+                    {
+                        for(int j = 0; j< tSlot.size(); j++)
+                        {
+                            if(tSlot.get(j).equals(tUNAv.get(i)))
+                            {
+                                tSlot.remove(j);
+                            }       
+                        }
+                    }        
+                }  
+                  
+                HMProfTS.put(tProf, tSlot); 
+            }
+            /*
+            Where courses go to get scheduled in times
+            */
+            for(int i = 0; i < ALSection.size(); i++)
+            {
+                
+                ArrayList<Timeslot> ALTSTemp = new ArrayList<>();
+                   
+            }
+        }
     }
     
     /**Step 5 of Scheduling. 
@@ -233,11 +272,38 @@ public class Schedule
         return true;
     }
     
-    
+
     //Testing main, will be deleted
     public static void main(String[] args) 
     {
-        Schedule mySchedule = new Schedule();
+        //Schedule mySchedule = new Schedule();
+        ArrayList<Timeslot> TSTest1 = new ArrayList<>();
+        ArrayList<Timeslot> TSTest2 = new ArrayList<>();
+        
+        for(int i = 0; i < 5; i++)
+        {
+            TSTest1.add(new Timeslot(i));
+        }
+        
+        for(int i = 0; i < 3; i++)
+        {
+            TSTest2.add(new Timeslot(i));
+        }
+        
+        
+        //TODO Solve issue that the for loop is not deleting one of the things it should be deleting
+        for(int i = 0; i < TSTest2.size(); i++)
+        {
+             for(int j = 0; j< TSTest1.size(); j++)
+             {
+                   if(TSTest1.get(i).equals(TSTest2.get(j)))
+                            {
+                                TSTest1.remove(j);
+                            }       
+                        }
+                    }        
+            System.out.println(TSTest1.size() );      
+        
     }
     
     public ProfessorCourse getRandomPC(ArrayList<ProfessorCourse> ALTemp)

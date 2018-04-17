@@ -10,12 +10,12 @@ package IST261Project;
  * @author msb5626
  */
 public class jfMain extends javax.swing.JFrame {
-
+    DBConnector myDBC;
     /**
      * Creates new form jfMain
      */
     public jfMain() {
-        jpButtons myJPB = new jpButtons();
+        jpButtons myJPB = new jpButtons(myDBC);
         myJPB.setVisible(true);
         this.add(myJPB);
         this.pack();

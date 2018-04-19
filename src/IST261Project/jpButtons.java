@@ -6,7 +6,9 @@
 package IST261Project;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
@@ -66,7 +68,11 @@ public class jpButtons extends javax.swing.JPanel {
         jbNewProfessor.setText("New Professor");
         jbNewProfessor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbNewProfessorActionPerformed(evt);
+                try {
+                    jbNewProfessorActionPerformed(evt);
+                } catch (SQLException ex) {
+                    Logger.getLogger(jpButtons.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
 
@@ -123,78 +129,108 @@ public class jpButtons extends javax.swing.JPanel {
     }// </editor-fold>                        
 
     private void jbNewProfessorActionPerformed(java.awt.event.ActionEvent evt) {                                               
-        // TODO add your handling code here:
-        String strProfessorID;
-        String strFName;
-        String strLName;
-        String strCourseLoad;
-        String strUsername;
-        String strDepartment;
-             
-        JTextField jtfProfessorID = new JTextField();
-        JTextField jtfFName = new JTextField();
-        JTextField jtfLName = new JTextField();
-        JTextField jtfCourseLoad = new JTextField();
-        JTextField jtfUsername = new JTextField();
-        JComboBox jcbDepartment = new JComboBox();
-        
-        final JComponent[] inputs = new JComponent[] 
-        {
-           new JLabel("Professor ID"),
-           jtfProfessorID,
-           new JLabel("First Name"),
-           jtfFName,
-           new JLabel("Last Name"),
-           jtfLName,
-           new JLabel("Courseload (credits)"),
-           jtfCourseLoad,
-           new JLabel("Username"),
-           jtfUsername,
-           new JLabel("Department"),
-           jcbDepartment
-        };
-        
-int result = JOptionPane.showConfirmDialog(null, inputs, "New Professor Info", JOptionPane.PLAIN_MESSAGE);
-if (result == JOptionPane.OK_OPTION) 
-{
-   strProfessorID = jtfProfessorID.getText();
-   int intProfessorID = Integer.parseInt(strProfessorID);
-   strFName = jtfFName.getText();
-   strLName = jtfLName.getText();
-   strCourseLoad = jtfCourseLoad.getText();
-   int intCourseLoad = Integer.parseInt(strCourseLoad);
-   strUsername = jtfUsername.getText();
-   strDepartment = jcbDepartment.getActionCommand();
-    System.out.println("You entered \n" 
-            + "Professor ID  "  + strProfessorID + "\n"
-            + "First Name  "  + strFName + "\n"
-            + "Last Name  "  +  strLName + "\n"
-            + "Courseload    "  + strCourseLoad + "\n"
-            + "Username    "  + strUsername + "\n"
-            + "Department   " + strDepartment + "\n"
-    );
-String strSQL =  "INSERT into ctg5117.professor (Professor_ID, Professor_FName, Professor_LName, Professor_CourseLoad, Professor_Username, Professor_Department) VALUES (?,?,?,?,?,?);";
-PreparedStatement myPS1;
-try {
-myPS1 = myDBConnector.myConnection.prepareStatement(strSQL);
-myPS1.setInt(1, intProfessorID);
-myPS1.setString(2, strFName);
-myPS1.setString(3, strLName);
-myPS1.setInt(4, intCourseLoad);
-myPS1.setString(5, strUsername);
-myPS1.setString(6, strDepartment);
-myPS1.executeUpdate();
-myDBConnector.myConnection.close();
-}
-catch (SQLException ex) 
-{
-            Logger.getLogger(jpButtons.class.getName()).log(Level.SEVERE, null, ex);
-}
+        try {                                               
+            // TODO add your handling code here:
+            MySQLDBConnector myS = new MySQLDBConnector();
+            
+            try {
+                myS.connectToDatabase("istdata.bk.psu.edu","3306","kds5314","berks6599","ctg5117");
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(jpButtons.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(jpButtons.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            Statement stmt = myS.myConnection.createStatement();
+            String sql = "Select professor.pDept from professor";
+            ResultSet myRS = stmt.executeQuery(sql);
+            
+            int RSLength = 0;
+            while(myRS.next())
+            {
+                RSLength++;
+            }
+            myRS.first();
+            timeslots = new Timeslot[RSLength];
+            for (int i = 0; i < RSLength; i++) {
+                char[] timeSlotDays = myRS.getString(4).toCharArray();
+                timeslots[i] = new Timeslot(myRS.getInt(1), myRS.getTime(2), myRS.getTime(3), timeSlotDays);
+                myRS.next();
+            }
+            fillSchedule(sectionTable);
+
+    }
+            
+            String strProfessorID;
+            String strFName;
+            String strLName;
+            String strCourseLoad;
+            String strUsername;
+            String strDepartment;
+            
+            JTextField jtfProfessorID = new JTextField();
+            JTextField jtfFName = new JTextField();
+            JTextField jtfLName = new JTextField();
+            JTextField jtfCourseLoad = new JTextField();
+            JTextField jtfUsername = new JTextField();
+            JComboBox jcbDepartment = new JComboBox();
+            
+            final JComponent[] inputs = new JComponent[]
+            {
+                new JLabel("Professor ID"),
+                jtfProfessorID,
+                new JLabel("First Name"),
+                jtfFName,
+                new JLabel("Last Name"),
+                jtfLName,
+                new JLabel("Courseload (credits)"),
+                jtfCourseLoad,
+                new JLabel("Username"),
+                jtfUsername,
+                new JLabel("Department"),
+                jcbDepartment
+            };
+            
+            int result = JOptionPane.showConfirmDialog(null, inputs, "New Professor Info", JOptionPane.PLAIN_MESSAGE);
+            if (result == JOptionPane.OK_OPTION)
+            {
+                strProfessorID = jtfProfessorID.getText();
+                int intProfessorID = Integer.parseInt(strProfessorID);
+                strFName = jtfFName.getText();
+                strLName = jtfLName.getText();
+                strCourseLoad = jtfCourseLoad.getText();
+                int intCourseLoad = Integer.parseInt(strCourseLoad);
+                strUsername = jtfUsername.getText();
+                strDepartment = jcbDepartment.getActionCommand();
+                System.out.println("You entered \n"
+                        + "Professor ID  "  + strProfessorID + "\n"
+                                + "First Name  "  + strFName + "\n"
+                                        + "Last Name  "  +  strLName + "\n"
+                                                + "Courseload    "  + strCourseLoad + "\n"
+                                                        + "Username    "  + strUsername + "\n"
+                                                                + "Department   " + strDepartment + "\n"
+                );
+                String strSQL =  "INSERT into ctg5117.professor (Professor_ID, Professor_FName, Professor_LName, Professor_CourseLoad, Professor_Username, Professor_Department) VALUES (?,?,?,?,?,?);";
+                PreparedStatement myPS1;
+                try {
+                    myPS1 = myDBConnector.myConnection.prepareStatement(strSQL);
+                    myPS1.setInt(1, intProfessorID);
+                    myPS1.setString(2, strFName);
+                    myPS1.setString(3, strLName);
+                    myPS1.setInt(4, intCourseLoad);
+                    myPS1.setString(5, strUsername);
+                    myPS1.setString(6, strDepartment);
+                    myPS1.executeUpdate();
+                    myDBConnector.myConnection.close();
+                }
+                catch (SQLException ex)
+                {
+                    Logger.getLogger(jpButtons.class.getName()).log(Level.SEVERE, null, ex);
+                }
 //System.out.println(intProfessorID);
-}
-else {
-    System.out.println("User canceled / closed the dialog, result = " + result);
-} 
+            }
+            else {
+                System.out.println("User canceled / closed the dialog, result = " + result);
+            } 
 //String strSQL =  "INSERT into ctg5117.professor (Professor_ID, Professor_FName, Professor_LName, Professor_CourseLoad, Professor_Username, Professor_Department) VALUES (?,?,?,?,?,?);";
 //PreparedStatement myPS1;
 //strProfessorID = jtfProfessorID.getText();
@@ -218,6 +254,10 @@ else {
 //{
 //            Logger.getLogger(jpButtons.class.getName()).log(Level.SEVERE, null, ex);
 //}
+
+        } catch (SQLException ex) {
+            Logger.getLogger(jpButtons.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }                                              
 

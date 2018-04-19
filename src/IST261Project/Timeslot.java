@@ -90,5 +90,15 @@ public class Timeslot {
     }
     
     
+    /**Override the equals method. 
+     * 
+     * @Override
+     * @param tsIn Inputted Timeslot
+     * @return true if their IDs are the same
+     */
+    public boolean equals(Timeslot tsIn)
+    {
+        return this.Time_ID == tsIn.getTime_ID();
+    }
     
 }

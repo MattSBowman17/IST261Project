@@ -89,6 +89,8 @@ public class SectionFeed {
     
     public static void fillSections(SectionFeed[][] sectionTable, MySQLDBConnector myS) throws SQLException
     {
+        int Room = 0;
+        int TimeSlot = 0;
         Statement stmt = myS.myConnection.createStatement();
         String sql = "SELECT course.cName,  building.bName,  room.rNumber,  professor.pFName,  professor.pLName,  timeslot.srtTime,  timeslot.dayId " +
             "FROM section " +
@@ -108,24 +110,56 @@ public class SectionFeed {
         myRS.first();
         sections = new SectionDisplay[RSLength];
         for (int i = 0; i < RSLength; i++) {
-            sections[i] = new SectionDisplay(myRS.getString(1), myRS.getString(2) + myRS.getInt(3), myRS.getString(4) + myRS.getString(5), myRS.getString(7).toCharArray(), myRS.getTime(6));
+            sections[i] = new SectionDisplay(myRS.getString(1), myRS.getString(2) + " " + myRS.getInt(3), myRS.getString(4) + " " + myRS.getString(5), myRS.getString(7).toCharArray(), myRS.getTime(6));
             myRS.next();
         }
-        for (int i = 0; i < sections.length; i++) {
-            for (int j = 0; j < dayLetter.length; j++) {
-                for (int k = 0; k < sections[i].Days.length; k++) {
+        //int j = 0; j < dayLetter.length; j++
+        for (int i = 0; i < sections.length; i++) 
+        {
+            Room = roomSlot(sections[i]);
+            for(int k = 0; k < sections[i].Days.length; k++) 
+            {
+                for(int j = 0; j < dayLetter.length; j++) 
+                {
                     if(sections[i].Days[k] == dayLetter[j])
                     {
-                        
+                        TimeSlot = timeSlot(sections[i], j) + 1;
+                        sectionTable[Room][TimeSlot] = new SectionFeed(sections[i].CourseName, sections[i].ProfName, "","");
+                        break;
                     }
                 }
-                          
-                
+            }            
+        }      
+    }
+    
+    public static int roomSlot(SectionDisplay sectionIn)
+    {
+        int roomID = 0;
+        String room = sectionIn.RoomName;
+        for (int i = 0; i < rooms.length; i++) {
+            String roomName = rooms[i].getBuilding_Name() + " " + rooms[i].getRoom_Number();
+            if (room.equals(roomName)) {
+                roomID = i;
             }
-            sectionTable[i][0] = new SectionFeed(rooms[i].getBuilding_Name(), rooms[i].getRoom_Number(), rooms[i].getRoom_Size(), rooms[i].getPackage_Package_ID());
-            
         }
-        
+        return roomID;
+    }
+    
+    public static int timeSlot(SectionDisplay sectionIn, int dayNumber)
+    {
+        int columnID = 0;
+        SectionFeedTableModel SFTM = new SectionFeedTableModel();
+        String timeStart = sectionIn.TimeStart.toString();
+        String day = days[dayNumber];
+        String sectionTime = day + " " + timeStart;
+        for (int i = 0; i < 43; i++) {
+            
+            if(sectionTime.equals(SFTM.getColumnName(i)))
+            {
+               columnID = i;
+            }
+        }
+        return columnID;
     }
 
     

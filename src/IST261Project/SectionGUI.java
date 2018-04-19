@@ -26,6 +26,7 @@ public class SectionGUI extends JFrame
         
 
         SectionFeed.getRooms(SFIn, myS);
+        SectionFeed.fillSections(SFIn, myS);
         
         //SectionFeed.addSection(new SectionFeed("IST311", "Bowers","08:00", "MWF"),SFIn);
         //SectionFeed.addSection(new SectionFeed("IST301", "Maurer","10:10", "MW"),SFIn);

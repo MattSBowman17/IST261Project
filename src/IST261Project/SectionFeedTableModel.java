@@ -24,10 +24,14 @@ public class SectionFeedTableModel extends AbstractTableModel
         {"09:05","10:35","13:35","15:05","16:35","18:00"},
         {"08:00","09:05","10:10","11:15","13:25","14:30","15:45","16:40"}
     };
-    String[] columnNames = new String[43];
+    public String[] columnNames = new String[43];
 
     SectionFeed[][] sections;
     
+    public SectionFeedTableModel()
+    {
+        
+    }
 
     public SectionFeedTableModel(SectionFeed[][] sections) 
     {

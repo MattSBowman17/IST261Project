@@ -222,19 +222,35 @@ public class Schedule
                 HMProfTS.putIfAbsent(ALProf.get(i), ALTemp);
             }
             
+
+            
             /*
                 Removing Constraints from each professor's list of avaliable times
             */
             Iterator it = HMProfTS.entrySet().iterator();
+            
             while (it.hasNext())
             {
                 HashMap.Entry pair = (HashMap.Entry)it.next();
-                Professor tProf = (Professor) pair.getKey();
-                ArrayList tSlot = (ArrayList) pair.getValue();
+                
+                Professor tProf = (Professor) pair.getKey();                    //Temporary Current professor in the Iterator Pair
+                ArrayList tSlot = (ArrayList) pair.getValue();                  //Temporary ArrayList of the Professor's timeslots            
+                ArrayList<Timeslot> tUNAv = tProf.getProfessorOccupied();       //Temporary List of Professor's unavaliable timeslots
+                
+                ArrayList<ProfessorConstraint> PrConTemp = new ArrayList<>();
+                
+                //Create an arraylist of professors who can teach a certain class
+                
+                for(int i = 0; i < ALPrCon.size(); i++)
+                {
+                    if(ALPrCon.get(i).getProfessor_Professor_ID() == tProf.getProfessor_ID())
+                    {
+                        tUNAv.add(ALTimeS.get(ALPrCon.get(i).getTime_Time_ID()));
+                    }
+                }
                 
                 if(tSlot.size() > 0)
                 {
-                    ArrayList tUNAv = tProf.getProfessorOccupied();
                     for(int i = 0; i < tUNAv.size(); i++)
                     {
                         for(int j = 0; j< tSlot.size(); j++)
@@ -244,68 +260,102 @@ public class Schedule
                                 tSlot.remove(j);
                             }       
                         }
-                    }        
-                }  
+                    }
+                                                                                // Create an arrayList of all of the professor's constraints.
+                }
                   
                 HMProfTS.put(tProf, tSlot); 
             }
             /*
             Where courses go to get scheduled in times
             */
-            for(int i = 0; i < ALSection.size(); i++)
-            {
+            ArrayList<Timeslot> ALTSTemp = new ArrayList<>();               //Literally what even is this. I'm going to keep it just in case I need it in the future
+            Iterator schedIT = HMProfTS.entrySet().iterator();              
                 
-                ArrayList<Timeslot> ALTSTemp = new ArrayList<>();
-                   
+                
+            while(schedIT.hasNext())
+            {
+                HashMap.Entry pair = (HashMap.Entry)it.next();
+                    
+                Professor tProf = (Professor) pair.getKey();                    //Temporary Current professor in the Iterator Pair
+                ArrayList<Timeslot> tSlot = (ArrayList) pair.getValue();        //Temporary ArrayList of the Professor's timeslots 
+                boolean bFlag = false;
+                int counter = 0;
+                int location = 0;
+                                                                                //Timeslot tCurr;
+                for(int i = 0; i < ALSection.size(); i++)
+                {                                                            
+                    if(ALProfC.get(ALSection.get(i).getProfessorCourse_ProfessorCourseID()).getProfessor_ProfessorID() == tProf.getProfessor_ID())
+                    {
+                        for(int j = 0; j < tSlot.size(); j++)
+                        {
+                            if(!bFlag)
+                            {
+                                for(int k = 0; k < ALRoomTAva.size(); k++)
+                                {
+                                    if(ALRoomTAva.get(k).getTime_Time_ID() == tSlot.get(i).getTime_ID())
+                                    {
+                                        bFlag = true;
+                                        ALSection.get(i).setRoomTime_RoomTimeID(ALRoomTAva.get(k).getRoomTimeID());
+                                        ALRoomTOcc.add(ALRoomTAva.get(k));
+                                        ALRoomTAva.remove(k);
+                                        break;
+                                    }   
+                                }
+                            }
+                            
+                            else
+                            {  
+                                break;
+                            }            
+                        }
+                    }    
+                }
             }
+        }
+        else
+        {
+            System.out.println("Need Sections to be Created first.");
         }
     }
     
-    /**Step 5 of Scheduling. 
-     * Check if the schedule has any major conflicts
-     *  
-     * 
-     * @return True if the schedule is allowed to be pushed to database
-     */
-    public boolean checkSchedule()
-    {
-        return true;
-    }
+//    /**Step 5 of Scheduling. 
+//     * Check if the schedule has any major conflicts
+//     * Nevermind. Not important
+//     * 
+//     * @return True if the schedule is allowed to be pushed to database
+//     */
+//    public boolean checkSchedule()
+//    {
+//        return true;
+//    }
     
 
     //Testing main, will be deleted
     public static void main(String[] args) 
     {
-        //Schedule mySchedule = new Schedule();
-        ArrayList<Timeslot> TSTest1 = new ArrayList<>();
-        ArrayList<Timeslot> TSTest2 = new ArrayList<>();
-        
-        for(int i = 0; i < 5; i++)
-        {
-            TSTest1.add(new Timeslot(i));
-        }
-        
-        for(int i = 0; i < 3; i++)
-        {
-            TSTest2.add(new Timeslot(i));
-        }
-        
-        
-        //TODO Solve issue that the for loop is not deleting one of the things it should be deleting
-        for(int i = 0; i < TSTest2.size(); i++)
-        {
-             for(int j = 0; j< TSTest1.size(); j++)
-             {
-                   if(TSTest1.get(j).equals(TSTest2.get(i)))
-                    {
-                        TSTest1.remove(j);
-                    }       
-             }
-        }        
-            System.out.println(TSTest1.size() );      
-        
+       ArrayList<Integer> arrInt = new ArrayList<>();
+       
+       for(int i = 0; i < 5; i++)
+       {
+           arrInt.add(i);
+       }
+       
+       for(int i = 0; i < 5; i++)
+       {
+           if(arrInt.get(i) == 3)
+           {
+               arrInt.remove(i);
+           }
+           System.out.println(i);
+       }
     }
     
+    /**Return a random ProfessorCourse from ArrayList
+     * 
+     * @param ALTemp Temporary name of the inputted ArrayList
+     * @return a random object from the inputted ArrayList of type ProfessorCourse
+     */
     public ProfessorCourse getRandomPC(ArrayList<ProfessorCourse> ALTemp)
     {
 	int index = myR.nextInt(ALTemp.size());
@@ -313,7 +363,24 @@ public class Schedule
 	    
     }
     
+    /**Return a random RoomTime from ArrayList
+     * 
+     * @param ALTemp Temporary name of the inputted ArrayList
+     * @return a random object from the inputted ArrayList of type RoomTime
+     */
     public RoomTime getRandomRT(ArrayList<RoomTime> ALTemp)
+    {
+	int index = myR.nextInt(ALTemp.size());
+	return ALTemp.get(index);
+	    
+    }
+    
+     /**Return a random Timeslot from ArrayList
+     * 
+     * @param ALTemp Temporary name of the inputted ArrayList
+     * @return a random object from the inputted ArrayList of type RoomTime
+     */
+    public Timeslot getRandomTS(ArrayList<Timeslot> ALTemp)
     {
 	int index = myR.nextInt(ALTemp.size());
 	return ALTemp.get(index);

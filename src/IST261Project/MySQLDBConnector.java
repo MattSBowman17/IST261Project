@@ -226,7 +226,7 @@ public TreeModel getDatabaseAndTableTreeModel()
      
 
       
-           myS.connectToDatabase("istdata.bk.psu.edu","3306","kds5314","berks6599","ctg5117");
+           myS.connectToDatabase("istdata.bk.psu.edu","3306","kds5314","berks6599","ctg5119");
             
             String strDBMD = myS.getDatabaseMetaData();
         System.out.println("Database MetaData");

@@ -8,9 +8,7 @@ package IST261Project;
 import java.sql.SQLException;
 import javax.swing.JFrame;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import static javax.swing.ScrollPaneConstants.*;
 
 /**
  *
@@ -27,10 +25,6 @@ public class SectionGUI extends JFrame
 
         SectionFeed.getRooms(SFIn, myS);
         SectionFeed.fillSections(SFIn, myS);
-        
-        //SectionFeed.addSection(new SectionFeed("IST311", "Bowers","08:00", "MWF"),SFIn);
-        //SectionFeed.addSection(new SectionFeed("IST301", "Maurer","10:10", "MW"),SFIn);
-
 
         JTable table = new JTable(new SectionFeedTableModel(SFIn));
         FrozenTablePane FTP = new FrozenTablePane(table, 1);

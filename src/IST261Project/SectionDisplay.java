@@ -17,10 +17,10 @@ public class SectionDisplay {
     String CourseName;
     String RoomName;
     String ProfName;
-    char[] Days;
+    String Days;
     Time TimeStart;
 
-    public SectionDisplay(String CourseName, String RoomName, String ProfName, char [] Days, Time TimeStart) {
+    public SectionDisplay(String CourseName, String RoomName, String ProfName, String Days, Time TimeStart) {
         this.CourseName = CourseName;
         this.RoomName = RoomName;
         this.ProfName = ProfName;

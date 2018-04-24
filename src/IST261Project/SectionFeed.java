@@ -22,17 +22,14 @@ public class SectionFeed {
     String Output;
     static Room[] rooms;
     static SectionDisplay[] sections;
-    static String[][] DayTimeSlot = new String[][]{
-        {"08:00","09:05","10:10","11:15","13:25","14:30","15:45","16:40","18:00"},
-        {"09:05","10:35","13:35","15:05","16:35","18:00","","",""},
-        {"08:00","09:05","10:10","11:15","13:25","14:30","15:45","16:40","18:00"},
-        {"09:05","10:35","13:35","15:05","16:35","18:00","","",""},
-        {"08:00","09:05","10:10","11:15","13:25","14:30","15:45","16:40",""}
+    static String[][] DayTimeSlot = new String[][]
+    {
+        {"08:00","09:05","10:10","11:15","13:25","14:30","15:45","16:40"},
+        {"09:05","10:35","13:35","15:05","16:35"}
     };
 
     
-    static char[] dayLetter = new char[]{'M','T','W','R','F'};
-    static String[] days = new String[]{"Monday","Tuesday","Wednesday","Thursday","Friday"};
+    static String[] days = new String[]{"MWF","TR"};
 
             
         
@@ -80,7 +77,7 @@ public class SectionFeed {
         }
         for (int i = 0; i < rooms.length; i++) {
             sectionTable[i][0] = new SectionFeed(rooms[i].getBuilding_Name(), rooms[i].getRoom_Number(), rooms[i].getRoom_Size(), rooms[i].getPackage_Package_ID());
-            for (int j = 1; j < 43; j++) {
+            for (int j = 1; j < 15; j++) {
                 sectionTable[i][j] = new SectionFeed("","","","");
             }
         }
@@ -110,25 +107,22 @@ public class SectionFeed {
         myRS.first();
         sections = new SectionDisplay[RSLength];
         for (int i = 0; i < RSLength; i++) {
-            sections[i] = new SectionDisplay(myRS.getString(1), myRS.getString(2) + " " + myRS.getInt(3), myRS.getString(4) + " " + myRS.getString(5), myRS.getString(7).toCharArray(), myRS.getTime(6));
+            sections[i] = new SectionDisplay(myRS.getString(1), myRS.getString(2) + " " + myRS.getInt(3), myRS.getString(4) + " " + myRS.getString(5), myRS.getString(7), myRS.getTime(6));
             myRS.next();
         }
-        //int j = 0; j < dayLetter.length; j++
+        
         for (int i = 0; i < sections.length; i++) 
         {
             Room = roomSlot(sections[i]);
-            for(int k = 0; k < sections[i].Days.length; k++) 
+            for(int j = 0; j < days.length; j++) 
             {
-                for(int j = 0; j < dayLetter.length; j++) 
+                if(sections[i].Days.equals(days[j]))
                 {
-                    if(sections[i].Days[k] == dayLetter[j])
-                    {
-                        TimeSlot = timeSlot(sections[i], j) + 1;
-                        sectionTable[Room][TimeSlot] = new SectionFeed(sections[i].CourseName, sections[i].ProfName, "","");
-                        break;
-                    }
+                    TimeSlot = (timeSlot(sections[i], j));
+                    sectionTable[Room][TimeSlot] = new SectionFeed(sections[i].CourseName, sections[i].ProfName, "","");
+                    break;
                 }
-            }            
+            }             
         }      
     }
     
@@ -149,38 +143,20 @@ public class SectionFeed {
     {
         int columnID = 0;
         SectionFeedTableModel SFTM = new SectionFeedTableModel();
-        String timeStart = sectionIn.TimeStart.toString();
+        String timeStart = sectionIn.TimeStart.toString().substring(0, 5);
         String day = days[dayNumber];
-        String sectionTime = day + " " + timeStart;
-        for (int i = 0; i < 43; i++) {
-            
-            if(sectionTime.equals(SFTM.getColumnName(i)))
+        String sectionTime = "<html>" + day + "<br>" + timeStart + "</html>";
+        for (int i = 0; i < 14; i++) {
+            String columnDay = SFTM.getColumnName(i);
+            boolean Correct = sectionTime.equals(columnDay);
+            if(Correct)
             {
                columnID = i;
+               break;
             }
         }
         return columnID;
     }
 
     
-//    public static void addSection(SectionFeed course, SectionFeed[][] sectionTable){
-//        char[] courseDays = course.fourthLine.toCharArray();
-//        for (int k = 0; k < courseDays.length; k++) {
-//            for (int i = 0; i < 5; i++) 
-//            { 
-//                if(courseDays[k] == dayLetter[i])
-//                {
-//                    for (int j = 0; j < 9; j++) 
-//                    {
-//                        if(course.thirdLine.equals(DayTimeSlot[i][j]))
-//                        {
-//                            sectionTable[j][i] = new SectionFeed(course.firstLine, course.secondLine, DayTimeSlot[i][j], days[i]);
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        
-//        
-//    }
 }

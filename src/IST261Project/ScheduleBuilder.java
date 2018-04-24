@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 public class ScheduleBuilder {
     
     MySQLDBConnector mySQL = new MySQLDBConnector();
-    SectionFeed[][] mySF = new SectionFeed[15][43];
+    SectionFeed[][] mySF = new SectionFeed[15][15];
 
     public ScheduleBuilder() {
         try {

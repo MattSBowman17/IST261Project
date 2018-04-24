@@ -5,20 +5,46 @@
  */
 package IST261Project;
 
+import java.awt.BorderLayout;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JTable;
+
 /**
  *
  * @author msb5626
  */
 public class jfMain extends javax.swing.JFrame {
-    DBConnector myDBC;
+    MySQLDBConnector mySQL = new MySQLDBConnector();
+    SectionFeed[][] mySF = new SectionFeed[15][15];
     /**
      * Creates new form jfMain
      */
-    public jfMain() {
-        jpButtons myJPB = new jpButtons(myDBC);
-        myJPB.setVisible(true);
-        this.add(myJPB);
-        this.pack();
+    public jfMain()
+    {
+        try {
+            mySQL.connectToDatabase("istdata.bk.psu.edu","3306","kds5314","berks6599","ctg5117");
+            jpButtons myJPB = new jpButtons(mySQL);
+            myJPB.setVisible(true);
+            this.add(myJPB, BorderLayout.PAGE_START);
+            SectionFeed.getRooms(mySF, mySQL);
+            SectionFeed.fillSections(mySF, mySQL);
+
+            JTable table = new JTable(new SectionFeedTableModel(mySF));
+            FrozenTablePane FTP = new FrozenTablePane(table, 1);
+            table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
+            table.setRowHeight(60);
+            table.setShowGrid(true);
+            add(FTP, BorderLayout.CENTER);
+            //this.pack();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(jfMain.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(jfMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         initComponents();
     }
 
@@ -54,17 +80,6 @@ public class jfMain extends javax.swing.JFrame {
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 620, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 379, Short.MAX_VALUE)
-        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

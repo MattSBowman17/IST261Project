@@ -6,22 +6,17 @@
 package IST261Project;
 
 import java.sql.SQLException;
-import javax.swing.JFrame;
-import static javax.swing.JFrame.EXIT_ON_CLOSE;
+import javax.swing.JPanel;
 import javax.swing.JTable;
 
 /**
  *
  * @author Kyle
  */
-public class SectionGUI extends JFrame
+public class SectionGUI extends JPanel
 {
     public SectionGUI(SectionFeed[][] SFIn, MySQLDBConnector myS) throws ClassNotFoundException, SQLException 
     {
-        super("Interactive Table Cell Example");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(500, 300);
-        
 
         SectionFeed.getRooms(SFIn, myS);
         SectionFeed.fillSections(SFIn, myS);

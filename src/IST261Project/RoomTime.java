@@ -10,7 +10,7 @@ public class RoomTime {
 
     
     //RoomeTime Constructor
-    public RoomTime(int RoomTimeID, int Time_Time_ID,int Room_idRoom)
+    public RoomTime(int RoomTimeID, int Time_Time_ID, int Room_idRoom)
     {
         this.RoomTimeID = RoomTimeID;
         this.Time_Time_ID = Time_Time_ID;

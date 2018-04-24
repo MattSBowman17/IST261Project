@@ -68,11 +68,11 @@ public class jpButtons extends javax.swing.JPanel {
         jbNewProfessor.setText("New Professor");
         jbNewProfessor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                try {
-                    jbNewProfessorActionPerformed(evt);
-                } catch (SQLException ex) {
-                    Logger.getLogger(jpButtons.class.getName()).log(Level.SEVERE, null, ex);
-                }
+//                try {
+//                    jbNewProfessorActionPerformed(evt);
+//                } catch (SQLException ex) {
+//                    Logger.getLogger(jpButtons.class.getName()).log(Level.SEVERE, null, ex);
+//                }
             }
         });
 
@@ -156,9 +156,11 @@ public class jpButtons extends javax.swing.JPanel {
                 timeslots[i] = new Timeslot(myRS.getInt(1), myRS.getTime(2), myRS.getTime(3), timeSlotDays);
                 myRS.next();
             }
-            fillSchedule(sectionTable);
 
     }
+        catch (SQLException ex) {
+                Logger.getLogger(jpButtons.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
             String strProfessorID;
             String strFName;
@@ -254,12 +256,7 @@ public class jpButtons extends javax.swing.JPanel {
 //{
 //            Logger.getLogger(jpButtons.class.getName()).log(Level.SEVERE, null, ex);
 //}
-
-        } catch (SQLException ex) {
-            Logger.getLogger(jpButtons.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    }                                              
+    }                                             
 
     private void jbAddSectionActionPerformed(java.awt.event.ActionEvent evt) {                                             
         // TODO add your handling code here:

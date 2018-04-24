@@ -5,6 +5,8 @@ public class Room {
     private int Room_ID;
 
     private int Building_BuildingID;
+    
+    private String Building_Name;
 
     private int Package_Package_ID;
 
@@ -18,7 +20,22 @@ public class Room {
         this.Room_Size = Room_Size;
         this.Package_Package_ID = Package_Package_ID;
     }
+
+    public Room(String Building_Name, int Package_Package_ID, int Room_Number, int Room_Size) {
+        this.Building_Name = Building_Name;
+        this.Package_Package_ID = Package_Package_ID;
+        this.Room_Number = Room_Number;
+        this.Room_Size = Room_Size;
+    }
     
+    
+    public String getBuilding_Name() {
+        return Building_Name;
+    }
+
+    public void setBuilding_Name(String Building_Name) {
+        this.Building_Name = Building_Name;
+    }
     /**
      * @return the Room_ID
      */

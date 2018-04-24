@@ -2,7 +2,8 @@ package IST261Project;
 
 import java.util.ArrayList;
 
-public class Professor {
+public class Professor
+{
 
     private int Professor_ID;
 
@@ -17,15 +18,20 @@ public class Professor {
     private String Profesor_Department;
     
     private ArrayList<Timeslot> ProfessorOccupied;            //List of RoomtimeIDs that the professor is already teaching during
+    
+    private int CoursesEnrolled;
 
     /**TODO: Create Professor Creation method. 
      * 
      * 
      */
-    
-    Professor(int Professor_ID, int Professor_CoruseLoad)
+  
+    Professor(int Professor_ID, int Professor_CourseLoad)
     {
-        
+        CoursesEnrolled = 0;
+        this.Professor_ID= Professor_ID;
+
+        this.Professor_CourseLoad = Professor_CourseLoad/3;
     }
     
     /**
@@ -134,6 +140,29 @@ public class Professor {
         }
         
         return bOccupied;
+    }
+    
+    public ArrayList<Timeslot> getProfessorOccupied()
+    {
+        return ProfessorOccupied;
+    }
+    
+        /**
+     * @return the CoursesEnrolled
+     */
+    public int getCoursesEnrolled() {
+        return CoursesEnrolled;
+    }
+
+   
+    public void increaseCoursesEnrolled() 
+    {
+        CoursesEnrolled++;
+    }
+    
+    public void decreaseCoursesEnrolled() 
+    {
+        CoursesEnrolled--;
     }
     
 }

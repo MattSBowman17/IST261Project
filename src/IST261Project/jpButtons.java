@@ -27,21 +27,13 @@ public class jpButtons extends javax.swing.JPanel {
      * Creates new form jpMain
      */
     
-    DBConnector myDBConnector;
+    MySQLDBConnector mySQL;
     
-    public jpButtons(DBConnector inDBC) {
+    public jpButtons(MySQLDBConnector mySQLIn) {
         initComponents();
+        mySQL = mySQLIn;
     }
     
-    public void setDBConnector(DBConnector dbcIn)
-    {
-       myDBConnector = dbcIn;    
-    }
-    
-    public DBConnector getDBConnector()
-    {
-       return myDBConnector;    
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -131,16 +123,8 @@ public class jpButtons extends javax.swing.JPanel {
     private void jbNewProfessorActionPerformed(java.awt.event.ActionEvent evt) {                                               
         try {                                               
             // TODO add your handling code here:
-            MySQLDBConnector myS = new MySQLDBConnector();
             
-            try {
-                myS.connectToDatabase("istdata.bk.psu.edu","3306","kds5314","berks6599","ctg5117");
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(jpButtons.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SQLException ex) {
-                Logger.getLogger(jpButtons.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            Statement stmt = myS.myConnection.createStatement();
+            Statement stmt = mySQL.myConnection.createStatement();
             String sql = "Select professor.pDept from professor";
             ResultSet myRS = stmt.executeQuery(sql);
             
@@ -150,12 +134,12 @@ public class jpButtons extends javax.swing.JPanel {
                 RSLength++;
             }
             myRS.first();
-            timeslots = new Timeslot[RSLength];
-            for (int i = 0; i < RSLength; i++) {
-                char[] timeSlotDays = myRS.getString(4).toCharArray();
-                timeslots[i] = new Timeslot(myRS.getInt(1), myRS.getTime(2), myRS.getTime(3), timeSlotDays);
-                myRS.next();
-            }
+//            timeslots = new Timeslot[RSLength];
+//            for (int i = 0; i < RSLength; i++) {
+//                char[] timeSlotDays = myRS.getString(4).toCharArray();
+//                timeslots[i] = new Timeslot(myRS.getInt(1), myRS.getTime(2), myRS.getTime(3), timeSlotDays);
+//                myRS.next();
+//            }
 
     }
         catch (SQLException ex) {
@@ -214,7 +198,7 @@ public class jpButtons extends javax.swing.JPanel {
                 String strSQL =  "INSERT into ctg5117.professor (Professor_ID, Professor_FName, Professor_LName, Professor_CourseLoad, Professor_Username, Professor_Department) VALUES (?,?,?,?,?,?);";
                 PreparedStatement myPS1;
                 try {
-                    myPS1 = myDBConnector.myConnection.prepareStatement(strSQL);
+                    myPS1 = mySQL.myConnection.prepareStatement(strSQL);
                     myPS1.setInt(1, intProfessorID);
                     myPS1.setString(2, strFName);
                     myPS1.setString(3, strLName);
@@ -222,7 +206,6 @@ public class jpButtons extends javax.swing.JPanel {
                     myPS1.setString(5, strUsername);
                     myPS1.setString(6, strDepartment);
                     myPS1.executeUpdate();
-                    myDBConnector.myConnection.close();
                 }
                 catch (SQLException ex)
                 {
@@ -305,7 +288,7 @@ strProfessorCourseID = jcbProfessorCourseID.getActionCommand();
 strRoomTimeID = jcbRoomTimeID.getActionCommand();
 strSectionNumber = jtfSectionNumber.getText();
 try {
-myPS1 = myDBConnector.myConnection.prepareStatement(strSQL);
+myPS1 = mySQL.myConnection.prepareStatement(strSQL);
 myPS1.setString(1, strSectionID);
 myPS1.setString(2, strProfessorCourseID);
 myPS1.setString(3, strRoomTimeID);
@@ -369,7 +352,7 @@ if (result == JOptionPane.OK_OPTION)
             String strSQL =  "INSERT into ctg5117.course (Course_ID, Course_Credits, Course_EstStudents, Course_Name, Course_Major, Course_Level) VALUES (?,?,?,?,?,?)";
 PreparedStatement myPS1;
 try {
-myPS1 = myDBConnector.myConnection.prepareStatement(strSQL);
+myPS1 = mySQL.myConnection.prepareStatement(strSQL);
 myPS1.setString(1, strCourseID);
 myPS1.setString(2, strCredits);
 myPS1.setString(3, strEstStudents);
@@ -377,7 +360,6 @@ myPS1.setString(4, strName);
 myPS1.setString(5, strMajor);
 myPS1.setString(6, strLevel);
 myPS1.executeUpdate();
-myDBConnector.myConnection.close();
 }
 catch (SQLException ex) 
 {

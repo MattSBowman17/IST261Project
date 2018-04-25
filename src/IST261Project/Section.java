@@ -11,11 +11,13 @@ public class Section {
     private int Section_SectionNumber;
     
     private int SectNumStudents;
-    
+   
     private int intCourse;
     
     private boolean bProblem = false;
+
     
+      
    
     //Section Constructor
 //    public Section(int Section_ID, int SectNumStudents, int ProfessorCourse_ProfessorCourseID)

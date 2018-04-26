@@ -17,9 +17,7 @@ public class RoomTime {
         this.Room_idRoom = Room_idRoom;
  
     }
-    
-    
-    
+
     /**
      * @return the Time_Time_ID
      */

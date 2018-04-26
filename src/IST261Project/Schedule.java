@@ -20,7 +20,8 @@ import java.util.logging.Logger;
  */
 public class Schedule
 {
-    private int intTestingSize = 10;
+    private int intTestingSize = 13;
+    private int intProfSize = 12;
     private int intCapacity = 30;
     private boolean bDebugging = true;
     
@@ -68,29 +69,46 @@ public class Schedule
      * In the future it will pull data from the MySQL server into the ArrayLists
      * 
      */
-    public void getData()
+    private void getData()
     {
         /*TODO: Use SQL to generate the data for the Array Lists of Roomtimes and ProfessorCourses 
          *  Right now it will only generate dummy data
          */
-        for(int i = 0; i <= 3; i++)
+        for(int i = 0; i <= intProfSize; i++)
         {
-           ALProf.add(new Professor(i, 9));
+           ALProf.add(new Professor(i, 15));
         }
         
         
         for(int i = 0; i < intTestingSize; i++)
         {
             ALTimeS.add(new Timeslot(i));
-            ALProfC.add(new ProfessorCourse(i, myR.nextInt(3), i, i));
-            //System.out.println(ALProfC.get(i).getProfessor_ProfessorID());
-            ALRoomTAva.add(new RoomTime(i, i, 1));
-            ALRoomTAva.add(new RoomTime(i+10, i, 2));
-            ALCourse.add(new Course(i, ((myR.nextInt(4)+1)*10)));
+            
+            //System.out.println(ALProfC.get(i).getProfessor_ProfessorID());    
+        }
+        
+        for(int i = 0; i < 70; i++)
+        {
+            ALProfC.add(new ProfessorCourse(i, myR.nextInt(intProfSize), i, i));
+        }
+           
+        
+        for(int i = 0; i < 38; i++)
+        {
+           ALCourse.add(new Course(i, ((myR.nextInt(5)+1)*10)));    
+        }
+        
+        for(int i = 0; i < 14; i++)
+        {
             ALRoom.add(new Room(i, 30, myR.nextInt(2-1)));
-            
-            
-
+        }
+        
+        for(int i = 0; i < ALRoom.size(); i++)
+        {
+            for(int j = 0; j< ALTimeS.size(); j++)
+            {
+                ALRoomTAva.add(new RoomTime(i, j, 1));
+            }
         }
     }
     
@@ -104,7 +122,7 @@ public class Schedule
      * For the most part complete
      * TODO: find a way to dynamically find capacity of room.
      */
-    public void createSections()
+    private void createSections()
     {
         int intSectionID = 0;
         
@@ -148,7 +166,7 @@ public class Schedule
      * courses
      * 
      */
-    public void scheduleProfessors()
+    private void scheduleProfessors()
     {
         //HashMap<ProfessorCourse, Section> HMPC = new HashMap<>();
        
@@ -207,7 +225,7 @@ public class Schedule
      * work at that given timeslot
      * ALProf.get(ALProfC.get(ALSection.get(i).getProfessorCourse_ProfessorCourseID()).getProfessor_ProfessorID())
      */
-    public void scheduleTimes()
+    private void scheduleTimes()
     {
         if(!ALSection.isEmpty())
         {
@@ -267,10 +285,20 @@ public class Schedule
      * 
      * @return True if the schedule is allowed to be pushed to database
      */
-    public void insertSchedule()
+    private void insertSchedule()
     {              
         PreparedStatement stmt;
         
+        try
+        {
+            String sqlDelete = "Delete from section";
+            stmt = mySQL.getConnection().prepareStatement(sqlDelete);
+            stmt.execute();
+        }
+        catch (SQLException ex)
+        {
+            Logger.getLogger(Schedule.class.getName()).log(Level.SEVERE, null, ex);
+        } 
         
 
         for(int i = 0; i < ALSection.size(); i++)
@@ -306,13 +334,16 @@ public class Schedule
         {
             mySQL.connectToDatabase("istdata.bk.psu.edu","3306","ctg5117","berks3900","ctg5117");
             Schedule s = new Schedule(mySQL);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Schedule.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
+        } 
+        catch (ClassNotFoundException ex)
+        {
             Logger.getLogger(Schedule.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+        catch (SQLException ex)
+        {
+            Logger.getLogger(Schedule.class.getName()).log(Level.SEVERE, null, ex);
+        }
+           
     }
     
     /**Return a random ProfessorCourse from ArrayList

@@ -75,38 +75,40 @@ public class Schedule
         /*TODO: Use SQL to generate the data for the Array Lists of Roomtimes and ProfessorCourses 
          *  Right now it will only generate dummy data
          */
-        for(int i = 0; i <= intProfSize; i++)
+        for(int i = 1; i <= intProfSize; i++)
         {
            ALProf.add(new Professor(i, 15));
         }
         
         
-        for(int i = 0; i < intTestingSize; i++)
+        for(int i = 1; i <= intTestingSize; i++)
         {
             ALTimeS.add(new Timeslot(i));
             
             //System.out.println(ALProfC.get(i).getProfessor_ProfessorID());    
         }
         
-        for(int i = 0; i < 60; i++)
+        for(int i = 1; i <= 80; i++)
         {
             ALProfC.add(new ProfessorCourse(i, myR.nextInt(intProfSize), i, i));
         }
            
         
-        for(int i = 0; i < 35; i++)
+        for(int i = 1; i < 39; i++)
         {
            ALCourse.add(new Course(i, ((myR.nextInt(5)+1)*10)));    
         }
         
-        for(int i = 0; i < 13; i++)
+        for(int i = 1; i < 14; i++)
         {
             ALRoom.add(new Room(i, 30, myR.nextInt(2-1)));
         }
+        
         int counter = 0;
-        for(int i = 0; i < ALRoom.size(); i++)
+        
+        for(int i = 1; i <= ALRoom.size(); i++)
         {
-            for(int j = 0; j< ALTimeS.size(); j++)
+            for(int j = 1; j <= ALTimeS.size(); j++)
             {
                 ALRoomTAva.add(new RoomTime(counter, j, i));
                 counter++;
@@ -167,10 +169,11 @@ public class Schedule
      * Uses professor data from professorCourse to add professors to all the
      * courses
      * 
+     * ALSection starts being modified to 
      */
     private void scheduleProfessors()
     {
-        //HashMap<ProfessorCourse, Section> HMPC = new HashMap<>();
+        //If Section isn't empty, start putting professors in Sections in the Section arraylist
        
         if(!ALSection.isEmpty())
         {
@@ -191,6 +194,7 @@ public class Schedule
                 
                 if(!PCTemp.isEmpty())
                 {
+                    //Pull random data out of the temporary PC array to be added to a class.
                     while(!PCTemp.isEmpty())
                     {
                         ProfessorCourse RandomPC = getRandomPC(PCTemp);
@@ -231,41 +235,19 @@ public class Schedule
     {
         if(!ALSection.isEmpty())
         {
-            HashMap<Professor, ArrayList<Timeslot> > HMProfTS = new HashMap<>();
-            
-            
-            /*
-                HashMap of all professors and available timeslots. Assuming from the start that they have equal timeslots
-            */
-            for(int i = 0; i < ALProf.size(); i++)
-            {
-                ArrayList<Timeslot> ALTemp = new ArrayList<>();
-                ALTemp.addAll(ALTimeS);
-                HMProfTS.putIfAbsent(ALProf.get(i), ALTemp);
-            }
-            
-            
-            /*
-            Where courses go to get scheduled in times
-            */
-            ArrayList<Timeslot> ALTSTemp = new ArrayList<>();                   //Literally what even is this. I'm going to keep it just in case I need it in the future
-            Iterator schedIT = HMProfTS.entrySet().iterator();              
-                
-                
-                for(int i = 0; i < ALSection.size(); i++)
-                {      
-                    RoomTime myRT = getRandomRT(ALRoomTAva);
-                    ALSection.get(i).setRoomTime_RoomTimeID(myRT.getRoomTimeID());
-                    
-                    for(int j = 0; j < ALRoomTAva.size(); j++)
+            for(int i = 0; i < ALSection.size(); i++)
+            {      
+                RoomTime myRT = getRandomRT(ALRoomTAva);
+                ALSection.get(i).setRoomTime_RoomTimeID(myRT.getRoomTimeID());
+
+                for(int j = 0; j < ALRoomTAva.size(); j++)
+                {
+                    if(myRT.getRoomTimeID() == ALRoomTAva.get(j).getRoomTimeID())
                     {
-                        if(myRT.getRoomTimeID() == ALRoomTAva.get(j).getRoomTimeID())
-                        {
-                            ALRoomTAva.remove(j);
-                        }
+                        ALRoomTAva.remove(j);
                     }
                 }
-            
+            }
         }
         else
         {

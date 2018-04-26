@@ -39,7 +39,8 @@ public class jfMain extends javax.swing.JFrame {
             table.setRowHeight(60);
             table.setShowGrid(true);
             add(FTP, BorderLayout.CENTER);
-            //this.pack();
+            
+            
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(jfMain.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {

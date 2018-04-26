@@ -87,7 +87,7 @@ public class Schedule
             //System.out.println(ALProfC.get(i).getProfessor_ProfessorID());    
         }
         
-        for(int i = 0; i < 70; i++)
+        for(int i = 0; i < 60; i++)
         {
             ALProfC.add(new ProfessorCourse(i, myR.nextInt(intProfSize), i, i));
         }
@@ -246,7 +246,7 @@ public class Schedule
             /*
             Where courses go to get scheduled in times
             */
-            ArrayList<Timeslot> ALTSTemp = new ArrayList<>();               //Literally what even is this. I'm going to keep it just in case I need it in the future
+            ArrayList<Timeslot> ALTSTemp = new ArrayList<>();                   //Literally what even is this. I'm going to keep it just in case I need it in the future
             Iterator schedIT = HMProfTS.entrySet().iterator();              
                 
                 

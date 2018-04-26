@@ -4,11 +4,14 @@
  * and open the template in the editor.
  */
 package IST261Project;
+import java.sql.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -17,7 +20,8 @@ import java.util.Random;
  */
 public class Schedule
 {
-    private int intTestingSize = 10;
+    private int intTestingSize = 13;
+    private int intProfSize = 12;
     private int intCapacity = 30;
     private boolean bDebugging = true;
     
@@ -44,14 +48,19 @@ public class Schedule
     private ArrayList<Package> ALPack = new ArrayList<>();
     private ArrayList<ProfessorConstraint> ALPrCon = new ArrayList<>();
    
+    MySQLDBConnector mySQL;
     
     
-    Schedule()
+    Schedule(MySQLDBConnector sql)
     {
+                
+        mySQL = sql;
         //myHMap.putIfAbsent(myRT, myPC);
         getData();
         createSections();
         scheduleProfessors();
+        scheduleTimes();
+        insertSchedule();
 
       
     }
@@ -60,29 +69,46 @@ public class Schedule
      * In the future it will pull data from the MySQL server into the ArrayLists
      * 
      */
-    public void getData()
+    private void getData()
     {
         /*TODO: Use SQL to generate the data for the Array Lists of Roomtimes and ProfessorCourses 
          *  Right now it will only generate dummy data
          */
-        for(int i = 0; i <= 3; i++)
+        for(int i = 0; i <= intProfSize; i++)
         {
-           ALProf.add(new Professor(i, 9));
+           ALProf.add(new Professor(i, 15));
         }
         
         
         for(int i = 0; i < intTestingSize; i++)
         {
             ALTimeS.add(new Timeslot(i));
-            ALProfC.add(new ProfessorCourse(i, myR.nextInt(3), i, i));
-            //System.out.println(ALProfC.get(i).getProfessor_ProfessorID());
-            ALRoomTAva.add(new RoomTime(i, i, 1));
-            ALRoomTAva.add(new RoomTime(i+10, i, 2));
-            ALCourse.add(new Course(i, ((myR.nextInt(4)+1)*10)));
+            
+            //System.out.println(ALProfC.get(i).getProfessor_ProfessorID());    
+        }
+        
+        for(int i = 0; i < 60; i++)
+        {
+            ALProfC.add(new ProfessorCourse(i, myR.nextInt(intProfSize), i, i));
+        }
+           
+        
+        for(int i = 0; i < 38; i++)
+        {
+           ALCourse.add(new Course(i, ((myR.nextInt(5)+1)*10)));    
+        }
+        
+        for(int i = 0; i < 14; i++)
+        {
             ALRoom.add(new Room(i, 30, myR.nextInt(2-1)));
-            
-            
-
+        }
+        
+        for(int i = 0; i < ALRoom.size(); i++)
+        {
+            for(int j = 0; j< ALTimeS.size(); j++)
+            {
+                ALRoomTAva.add(new RoomTime(i, j, 1));
+            }
         }
     }
     
@@ -96,7 +122,7 @@ public class Schedule
      * For the most part complete
      * TODO: find a way to dynamically find capacity of room.
      */
-    public void createSections()
+    private void createSections()
     {
         int intSectionID = 0;
         
@@ -140,7 +166,7 @@ public class Schedule
      * courses
      * 
      */
-    public void scheduleProfessors()
+    private void scheduleProfessors()
     {
         //HashMap<ProfessorCourse, Section> HMPC = new HashMap<>();
        
@@ -166,11 +192,11 @@ public class Schedule
                     while(!PCTemp.isEmpty())
                     {
                         ProfessorCourse RandomPC = getRandomPC(PCTemp);
+                        
                         if(ALProf.get(RandomPC.getProfessor_ProfessorID()).getCoursesEnrolled() < ALProf.get(RandomPC.getProfessor_ProfessorID()).getProfessor_CourseLoad()) 
                         {
                             ALSection.get(i).setProfessorCourse_ProfessorCourseID(RandomPC.getProfessorCourseID());
                             ALProf.get(RandomPC.getProfessor_ProfessorID()).increaseCoursesEnrolled();
-                            //System.out.println("Sechuled properly");
                             break;
                         }
                         else if(PCTemp.size() == 1)
@@ -178,14 +204,8 @@ public class Schedule
                             ALSection.get(i).setProfessorCourse_ProfessorCourseID(RandomPC.getProfessorCourseID());
                             ALProf.get(RandomPC.getProfessor_ProfessorID()).increaseCoursesEnrolled();
                             ALSection.get(i).setProblem();
-                            //System.out.println("Over-Scheduled");
-                            PCTemp.remove(RandomPC);
-                            break;
                         }
-                        else
-                        {
-                            PCTemp.remove(RandomPC);
-                        }
+                        PCTemp.remove(RandomPC);
                     }
                 }
                 else
@@ -205,7 +225,7 @@ public class Schedule
      * work at that given timeslot
      * ALProf.get(ALProfC.get(ALSection.get(i).getProfessorCourse_ProfessorCourseID()).getProfessor_ProfessorID())
      */
-    public void scheduleTimes()
+    private void scheduleTimes()
     {
         if(!ALSection.isEmpty())
         {
@@ -222,92 +242,31 @@ public class Schedule
                 HMProfTS.putIfAbsent(ALProf.get(i), ALTemp);
             }
             
-
             
-            /*
-                Removing Constraints from each professor's list of avaliable times
-            */
-            Iterator it = HMProfTS.entrySet().iterator();
-            
-            while (it.hasNext())
-            {
-                HashMap.Entry pair = (HashMap.Entry)it.next();
-                
-                Professor tProf = (Professor) pair.getKey();                    //Temporary Current professor in the Iterator Pair
-                ArrayList tSlot = (ArrayList) pair.getValue();                  //Temporary ArrayList of the Professor's timeslots            
-                ArrayList<Timeslot> tUNAv = tProf.getProfessorOccupied();       //Temporary List of Professor's unavaliable timeslots
-                
-                ArrayList<ProfessorConstraint> PrConTemp = new ArrayList<>();
-                
-                //Create an arraylist of professors who can teach a certain class
-                
-                for(int i = 0; i < ALPrCon.size(); i++)
-                {
-                    if(ALPrCon.get(i).getProfessor_Professor_ID() == tProf.getProfessor_ID())
-                    {
-                        tUNAv.add(ALTimeS.get(ALPrCon.get(i).getTime_Time_ID()));
-                    }
-                }
-                
-                if(tSlot.size() > 0)
-                {
-                    for(int i = 0; i < tUNAv.size(); i++)
-                    {
-                        for(int j = 0; j< tSlot.size(); j++)
-                        {
-                            if(tSlot.get(j).equals(tUNAv.get(i)))
-                            {
-                                tSlot.remove(j);
-                            }       
-                        }
-                    }
-                                                                                // Create an arrayList of all of the professor's constraints.
-                }
-                  
-                HMProfTS.put(tProf, tSlot); 
-            }
             /*
             Where courses go to get scheduled in times
             */
-            ArrayList<Timeslot> ALTSTemp = new ArrayList<>();               //Literally what even is this. I'm going to keep it just in case I need it in the future
+            ArrayList<Timeslot> ALTSTemp = new ArrayList<>();                   //Literally what even is this. I'm going to keep it just in case I need it in the future
             Iterator schedIT = HMProfTS.entrySet().iterator();              
                 
                 
             while(schedIT.hasNext())
             {
-                HashMap.Entry pair = (HashMap.Entry)it.next();
+                HashMap.Entry pair = (HashMap.Entry)schedIT.next();
                     
                 Professor tProf = (Professor) pair.getKey();                    //Temporary Current professor in the Iterator Pair
                 ArrayList<Timeslot> tSlot = (ArrayList) pair.getValue();        //Temporary ArrayList of the Professor's timeslots 
-                boolean bFlag = false;
-                int counter = 0;
-                int location = 0;
                                                                                 //Timeslot tCurr;
                 for(int i = 0; i < ALSection.size(); i++)
-                {                                                            
+                {      
                     if(ALProfC.get(ALSection.get(i).getProfessorCourse_ProfessorCourseID()).getProfessor_ProfessorID() == tProf.getProfessor_ID())
                     {
                         for(int j = 0; j < tSlot.size(); j++)
                         {
-                            if(!bFlag)
-                            {
-                                for(int k = 0; k < ALRoomTAva.size(); k++)
-                                {
-                                    if(ALRoomTAva.get(k).getTime_Time_ID() == tSlot.get(i).getTime_ID())
-                                    {
-                                        bFlag = true;
-                                        ALSection.get(i).setRoomTime_RoomTimeID(ALRoomTAva.get(k).getRoomTimeID());
-                                        ALRoomTOcc.add(ALRoomTAva.get(k));
-                                        ALRoomTAva.remove(k);
-                                        break;
-                                    }   
-                                }
-                            }
-                            
-                            else
-                            {  
-                                break;
-                            }            
+                            ALSection.get(i).setRoomTime_RoomTimeID(ALRoomTAva.get(j).getRoomTimeID());
+                            ALRoomTOcc.add(ALRoomTAva.get(j));
+                            ALRoomTAva.remove(j);
+                            break;                                               
                         }
                     }    
                 }
@@ -319,36 +278,72 @@ public class Schedule
         }
     }
     
-//    /**Step 5 of Scheduling. 
-//     * Check if the schedule has any major conflicts
-//     * Nevermind. Not important
-//     * 
-//     * @return True if the schedule is allowed to be pushed to database
-//     */
-//    public boolean checkSchedule()
-//    {
-//        return true;
-//    }
+    /**Step 5 of Scheduling. 
+     * Put into database
+     * Adapted from https://docs.oracle.com/javase/tutorial/jdbc/basics/prepared.html
+     * https://www.javatpoint.com/PreparedStatement-interface
+     * 
+     * @return True if the schedule is allowed to be pushed to database
+     */
+    private void insertSchedule()
+    {              
+        PreparedStatement stmt;
+        
+        try
+        {
+            String sqlDelete = "Delete from section";
+            stmt = mySQL.getConnection().prepareStatement(sqlDelete);
+            stmt.execute();
+        }
+        catch (SQLException ex)
+        {
+            Logger.getLogger(Schedule.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        
+
+        for(int i = 0; i < ALSection.size(); i++)
+        {
+           
+            try
+            {
+                String sql = "Insert into Section (ProfessorCourse_ProfessorCourseID, RoomTime_RoomTimeID, enrolledStd, studentsNum, sectionNum) values (?, ?, 30, 30, ?)";
+                int b = ALSection.get(i).getProfessorCourse_ProfessorCourseID();
+                int c = ALSection.get(i).getRoomTime_RoomTimeID();
+                int d = ALSection.get(i).getSection_SectionNumber();
+                
+                stmt = mySQL.getConnection().prepareStatement(sql);
+                stmt.setInt(1, b);
+                stmt.setInt(2, c);
+                stmt.setInt(3, d);
+                
+                stmt.execute();
+            }
+            catch (SQLException ex)
+            {
+                Logger.getLogger(Schedule.class.getName()).log(Level.SEVERE, null, ex);
+            }   
+        }
+    }
     
 
     //Testing main, will be deleted
     public static void main(String[] args) 
     {
-       ArrayList<Integer> arrInt = new ArrayList<>();
-       
-       for(int i = 0; i < 5; i++)
-       {
-           arrInt.add(i);
-       }
-       
-       for(int i = 0; i < 5; i++)
-       {
-           if(arrInt.get(i) == 3)
-           {
-               arrInt.remove(i);
-           }
-           System.out.println(i);
-       }
+        MySQLDBConnector mySQL = new MySQLDBConnector();
+        try
+        {
+            mySQL.connectToDatabase("istdata.bk.psu.edu","3306","ctg5117","berks3900","ctg5117");
+            Schedule s = new Schedule(mySQL);
+        } 
+        catch (ClassNotFoundException ex)
+        {
+            Logger.getLogger(Schedule.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (SQLException ex)
+        {
+            Logger.getLogger(Schedule.class.getName()).log(Level.SEVERE, null, ex);
+        }
+           
     }
     
     /**Return a random ProfessorCourse from ArrayList

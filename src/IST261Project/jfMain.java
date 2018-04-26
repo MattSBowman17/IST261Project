@@ -24,7 +24,8 @@ public class jfMain extends javax.swing.JFrame {
     public jfMain()
     {
         try {
-            mySQL.connectToDatabase("istdata.bk.psu.edu","3306","kds5314","berks6599","ctg5117");
+            mySQL.connectToDatabase("istdata.bk.psu.edu","3306","ctg5117","berks3900","ctg5117");
+            Schedule mySchedule = new Schedule(mySQL);
             jpButtons myJPB = new jpButtons(mySQL);
             myJPB.setVisible(true);
             this.add(myJPB, BorderLayout.PAGE_START);

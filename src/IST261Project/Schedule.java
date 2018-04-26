@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import sun.awt.resources.awt_ko;
 
 
 /**
@@ -93,21 +94,22 @@ public class Schedule
         }
            
         
-        for(int i = 0; i < 38; i++)
+        for(int i = 0; i < 35; i++)
         {
            ALCourse.add(new Course(i, ((myR.nextInt(5)+1)*10)));    
         }
         
-        for(int i = 0; i < 14; i++)
+        for(int i = 0; i < 13; i++)
         {
             ALRoom.add(new Room(i, 30, myR.nextInt(2-1)));
         }
-        
+        int counter = 0;
         for(int i = 0; i < ALRoom.size(); i++)
         {
             for(int j = 0; j< ALTimeS.size(); j++)
             {
-                ALRoomTAva.add(new RoomTime(i, j, 1));
+                ALRoomTAva.add(new RoomTime(counter, j, i));
+                counter++;
             }
         }
     }
@@ -250,27 +252,20 @@ public class Schedule
             Iterator schedIT = HMProfTS.entrySet().iterator();              
                 
                 
-            while(schedIT.hasNext())
-            {
-                HashMap.Entry pair = (HashMap.Entry)schedIT.next();
-                    
-                Professor tProf = (Professor) pair.getKey();                    //Temporary Current professor in the Iterator Pair
-                ArrayList<Timeslot> tSlot = (ArrayList) pair.getValue();        //Temporary ArrayList of the Professor's timeslots 
-                                                                                //Timeslot tCurr;
                 for(int i = 0; i < ALSection.size(); i++)
                 {      
-                    if(ALProfC.get(ALSection.get(i).getProfessorCourse_ProfessorCourseID()).getProfessor_ProfessorID() == tProf.getProfessor_ID())
+                    RoomTime myRT = getRandomRT(ALRoomTAva);
+                    ALSection.get(i).setRoomTime_RoomTimeID(myRT.getRoomTimeID());
+                    
+                    for(int j = 0; j < ALRoomTAva.size(); j++)
                     {
-                        for(int j = 0; j < tSlot.size(); j++)
+                        if(myRT.getRoomTimeID() == ALRoomTAva.get(j).getRoomTimeID())
                         {
-                            ALSection.get(i).setRoomTime_RoomTimeID(ALRoomTAva.get(j).getRoomTimeID());
-                            ALRoomTOcc.add(ALRoomTAva.get(j));
                             ALRoomTAva.remove(j);
-                            break;                                               
                         }
-                    }    
+                    }
                 }
-            }
+            
         }
         else
         {

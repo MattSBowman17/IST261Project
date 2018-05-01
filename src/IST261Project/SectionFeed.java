@@ -12,8 +12,11 @@ import java.sql.Statement;
 /**
  *
  * @author Kyle
+ * 
+ * 
  */
 
+/** Object that makes up Table Model. Contains multiple lines for more displayable data */
 public class SectionFeed {
     String firstLine;
     String secondLine;
@@ -31,10 +34,13 @@ public class SectionFeed {
     
     static String[] days = new String[]{"MWF","TR"};
 
-            
-        
-    
-    
+    /**
+     *
+     * @param courseName Course Name to be displayed on the first line.
+     * @param professorName Professor Name to be displayed on the second line.
+     * @param classTime The 24HR time used to determine which row the section belongs in.
+     * @param classDay Days the section takes place used in determining the correct row.
+     */
     public SectionFeed(String courseName, String professorName, String classTime, String classDay) 
     {
         this.firstLine = courseName;
@@ -44,6 +50,13 @@ public class SectionFeed {
         setOutput();
     }
     
+    /**
+     *
+     * @param buildingName The first line to be displayed in the first column.
+     * @param roomNumber The second part of the first line to be displayed in the first column.
+     * @param seats The second line to be displayed in the first column.
+     * @param roomPackage The third line to be displayed in the first column.
+     */
     public SectionFeed(String buildingName, int roomNumber, int seats, int roomPackage) 
     {
         this.firstLine = buildingName + " " + String.valueOf(roomNumber);
@@ -56,6 +69,12 @@ public class SectionFeed {
         Output = "<html>" + firstLine + "<br>" + secondLine + "<br>" + thirdLine + "</html>";
     }
     
+    /**
+     *
+     * @param sectionTable Table to fill first column with rooms.
+     * @param myS SQL Connector
+     * @throws SQLException caught by jfMain
+     */
     public static void getRooms(SectionFeed[][] sectionTable, MySQLDBConnector myS) throws SQLException
     {
         Statement stmt = myS.myConnection.createStatement();
@@ -84,6 +103,12 @@ public class SectionFeed {
         
     }
     
+    /**
+     *
+     * @param sectionTable Table to fill with sections.
+     * @param myS SQL Connector
+     * @throws SQLException caught by jfMain
+     */
     public static void fillSections(SectionFeed[][] sectionTable, MySQLDBConnector myS) throws SQLException
     {
         int Room = 0;
@@ -126,6 +151,11 @@ public class SectionFeed {
         }      
     }
     
+    /**
+     *
+     * @param sectionIn SectionDisplay to pull room info from.
+     * @return The correct column that correlates to the room in the SectionDisplay.
+     */
     public static int roomSlot(SectionDisplay sectionIn)
     {
         int roomID = 0;
@@ -139,6 +169,12 @@ public class SectionFeed {
         return roomID;
     }
     
+    /**
+     *
+     * @param sectionIn SectionDisplay to pull timeSlot info from.
+     * @param dayNumber The correct day type of the section MWF or TR.
+     * @return The correct row that correlates to the timeSlot in the SectionDisplay.
+     */
     public static int timeSlot(SectionDisplay sectionIn, int dayNumber)
     {
         int columnID = 0;

@@ -12,8 +12,10 @@ import javax.swing.table.AbstractTableModel;
 /**
  *
  * @author kds5314
+ * 
  */
 
+/** Table Model Used to display section data */
 public class SectionFeedTableModel extends AbstractTableModel
 {
     String[] days = new String[]{"MWF","TR"};
@@ -23,10 +25,16 @@ public class SectionFeedTableModel extends AbstractTableModel
         {"09:05","10:35","13:35","15:05","16:35"}
     };
     
+    /**
+     * ColumnNames to be used by SectionFeed to find correct column
+     */
     public String[] columnNames = new String[15];
 
     SectionFeed[][] sections;
     
+    /**
+     * Constructor that doesn't populate sectionTable to be used for column number calculations.
+     */
     public SectionFeedTableModel()
     {
         int counter = 1;
@@ -39,6 +47,10 @@ public class SectionFeedTableModel extends AbstractTableModel
         }
     }
 
+    /**
+     *
+     * @param sections SectionDisplay to pull timeSlot ColumnNames into.
+     */
     public SectionFeedTableModel(SectionFeed[][] sections) 
     {
         this.sections = sections;

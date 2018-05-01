@@ -8,13 +8,8 @@ package IST261Project;
 /**
  *
  * @author kds5314
- */
-/**
- * A ScrollPane which "freezes" the specified number of
- * columns of a JTable.
  *
- * @author fahdshariff
- *
+ * Adapted from http://fahdshariff.blogspot.sg/2010/02/freezing-columns-in-jtable.html
  */
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -23,9 +18,22 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableModel;
  
+/**
+ *
+ * @author Kyle
+ * 
+ * 
+ */
+
+/** Freezes the First Column of a JTable */
 public class FrozenTablePane extends JScrollPane{
  
-  public FrozenTablePane(JTable table, int colsToFreeze){
+    /**
+     *
+     * @param table The JTable to freeze columns from.
+     * @param colsToFreeze The number of columns to freeze from the table.
+     */
+    public FrozenTablePane(JTable table, int colsToFreeze){
     super(table);
  
     TableModel model = table.getModel();

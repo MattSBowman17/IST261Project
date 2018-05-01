@@ -8,11 +8,9 @@ import java.sql.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import sun.awt.resources.awt_ko;
 
 
 /**
@@ -21,90 +19,97 @@ import sun.awt.resources.awt_ko;
  */
 public class Schedule
 {
-    private int intTestingSize = 13;
-    private int intProfSize = 12;
-    private int intCapacity = 30;
-    private boolean bDebugging = true;
-    
+    public final int intTestingSize = 13;      // Number of timeslots total. Used for generating dummy data equal to our database data.
+    public final int intProfSize = 12;         // Number of total professors
+    public final int intCapacity = 30;         // Overall room capacity, decided to be this since it would be a hassle to 
+    public final boolean bDebugging = true;    // Debugging value, if enabled will print out statements to the console
     
     Random myR = new Random();
-    
-//  ProfessorCourse myPC = new ProfessorCourse(1, 1, 1);
-//  RoomTime myRT = new RoomTime(1, 1, 1);
     
     //Used to store the actual class schedule
     HashMap<RoomTime, ProfessorCourse> HMSection = new HashMap<>();
     
-    //Occupied RoomTimes
-    private ArrayList<RoomTime> ALRoomTOcc = new ArrayList<>();
-    //Avaliable RoomTimes
-    private ArrayList<RoomTime> ALRoomTAva = new ArrayList<>();
+    public ArrayList<RoomTime> ALRoomTOcc = new ArrayList<>();         //ArrayList of Occupied RoomTimes NOT USED YET
+    public ArrayList<RoomTime> ALRoomTAva = new ArrayList<>();         //ArrayList of Avaliable RoomTimes 
     
-    private ArrayList<Timeslot> ALTimeS = new ArrayList<>();
-    private ArrayList<Section> ALSection = new ArrayList<>();
-    private ArrayList<ProfessorCourse> ALProfC = new ArrayList<>(); 
-    private ArrayList<Room> ALRoom = new ArrayList<>();    
-    private ArrayList<Course> ALCourse = new ArrayList<>();       
-    private ArrayList<Professor> ALProf = new ArrayList<>();
-    private ArrayList<Package> ALPack = new ArrayList<>();
-    private ArrayList<ProfessorConstraint> ALPrCon = new ArrayList<>();
+    public ArrayList<Timeslot> ALTimeS = new ArrayList<>();            //ArrayList of Timeslots
+    public ArrayList<Section> ALSection = new ArrayList<>();           //ArrayList of Sections
+    public ArrayList<ProfessorCourse> ALProfC = new ArrayList<>();     //ArrayList of ProfessorCourses
+    public ArrayList<Room> ALRoom = new ArrayList<>();                 //ArrayList of Rooms
+    public ArrayList<Course> ALCourse = new ArrayList<>();             //ArrayList of Courses
+    public ArrayList<Professor> ALProf = new ArrayList<>();            //ArrayList of Professors
+    public ArrayList<Package> ALPack = new ArrayList<>();              //ArrayList of Packages NOT USED YET
+    public ArrayList<ProfessorConstraint> ALPrCon = new ArrayList<>(); //ArrayList of ProfessorConstraints NOT USED YET
    
     MySQLDBConnector mySQL;
     
     
+    
+    /**Constructor for the Schedule.
+     * Runs all of the private methods of the schedule, they are made public for
+     * now so the JavaDoc has everything. But these should be private methods
+     * 
+     * @param sql The mySQL connection being used by the overall program
+     */
     Schedule(MySQLDBConnector sql)
-    {
-                
+    {          
         mySQL = sql;
-        //myHMap.putIfAbsent(myRT, myPC);
+        
         getData();
         createSections();
         scheduleProfessors();
         scheduleTimes();
         insertSchedule();
-
-      
     }
     
     /**Currently It Generates dummy data. 
      * In the future it will pull data from the MySQL server into the ArrayLists
      * 
+     * At this point the code generates data that is almost exactly equal to the
+     * data in the database. We already pull data from the database in another 
+     * method
+     * 
+     * It would be a waste of our time to parse all of these result sets for a 
+     * minimal bonus to our data. The ProfessorCourse data that we currently 
+     * have isn't accurate to real life, but for the most part it should work.
+     * 
      */
-    private void getData()
+    public void getData()
     {
-        /*TODO: Use SQL to generate the data for the Array Lists of Roomtimes and ProfessorCourses 
-         *  Right now it will only generate dummy data
-         */
+        //Generate Professors
         for(int i = 1; i <= intProfSize; i++)
         {
            ALProf.add(new Professor(i, 15));
         }
-        
-        
+        //Generate timeslots
         for(int i = 1; i <= intTestingSize; i++)
         {
             ALTimeS.add(new Timeslot(i));
             
             //System.out.println(ALProfC.get(i).getProfessor_ProfessorID());    
         }
-        
-        for(int i = 1; i <= 80; i++)
-        {
-            ALProfC.add(new ProfessorCourse(i, myR.nextInt(intProfSize), i, i));
-        }
-           
-        
+  
+        //Generate Courses
         for(int i = 1; i < 39; i++)
         {
            ALCourse.add(new Course(i, ((myR.nextInt(5)+1)*10)));    
         }
         
+        //Generate ProfessorCourses 
+        for(int i = 1; i <= 80; i++)
+        {
+            ALProfC.add(new ProfessorCourse(i, myR.nextInt(intProfSize), i, i));
+        }
+        
+        //Generate Rooms
         for(int i = 1; i < 14; i++)
         {
             ALRoom.add(new Room(i, 30, myR.nextInt(2-1)));
         }
         
-        int counter = 0;
+        /*Generate Roomtimes, Counter is the overall number of roomtimes without
+        going to a triple nested loop*/
+        int counter = 1;
         
         for(int i = 1; i <= ALRoom.size(); i++)
         {
@@ -124,9 +129,12 @@ public class Schedule
      * 
      * 
      * For the most part complete
-     * TODO: find a way to dynamically find capacity of room.
+     * TODO: find a way to dynamically find capacity of room. This feature will
+     * be created in Sprint 2
+     * 
+     * @author ctg5117
      */
-    private void createSections()
+    public void createSections()
     {
         int intSectionID = 0;
         
@@ -169,9 +177,11 @@ public class Schedule
      * Uses professor data from professorCourse to add professors to all the
      * courses
      * 
-     * ALSection starts being modified to 
+     * ALSection starts being modified to have a ProfessorCourse
+     * 
+     * @author ctg5117
      */
-    private void scheduleProfessors()
+    public void scheduleProfessors()
     {
         //If Section isn't empty, start putting professors in Sections in the Section arraylist
        
@@ -231,7 +241,7 @@ public class Schedule
      * work at that given timeslot
      * ALProf.get(ALProfC.get(ALSection.get(i).getProfessorCourse_ProfessorCourseID()).getProfessor_ProfessorID())
      */
-    private void scheduleTimes()
+    public void scheduleTimes()
     {
         if(!ALSection.isEmpty())
         {
@@ -239,9 +249,9 @@ public class Schedule
             {      
                 RoomTime myRT = getRandomRT(ALRoomTAva);
                 ALSection.get(i).setRoomTime_RoomTimeID(myRT.getRoomTimeID());
-
+                
                 for(int j = 0; j < ALRoomTAva.size(); j++)
-                {
+                {    
                     if(myRT.getRoomTimeID() == ALRoomTAva.get(j).getRoomTimeID())
                     {
                         ALRoomTAva.remove(j);
@@ -259,10 +269,8 @@ public class Schedule
      * Put into database
      * Adapted from https://docs.oracle.com/javase/tutorial/jdbc/basics/prepared.html
      * https://www.javatpoint.com/PreparedStatement-interface
-     * 
-     * @return True if the schedule is allowed to be pushed to database
      */
-    private void insertSchedule()
+    public void insertSchedule()
     {              
         PreparedStatement stmt;
         
@@ -276,8 +284,7 @@ public class Schedule
         {
             Logger.getLogger(Schedule.class.getName()).log(Level.SEVERE, null, ex);
         } 
-        
-
+       
         for(int i = 0; i < ALSection.size(); i++)
         {
            
@@ -302,27 +309,6 @@ public class Schedule
         }
     }
     
-
-    //Testing main, will be deleted
-    public static void main(String[] args) 
-    {
-        MySQLDBConnector mySQL = new MySQLDBConnector();
-        try
-        {
-            mySQL.connectToDatabase("istdata.bk.psu.edu","3306","ctg5117","berks3900","ctg5117");
-            Schedule s = new Schedule(mySQL);
-        } 
-        catch (ClassNotFoundException ex)
-        {
-            Logger.getLogger(Schedule.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (SQLException ex)
-        {
-            Logger.getLogger(Schedule.class.getName()).log(Level.SEVERE, null, ex);
-        }
-           
-    }
-    
     /**Return a random ProfessorCourse from ArrayList
      * 
      * @param ALTemp Temporary name of the inputted ArrayList
@@ -331,8 +317,7 @@ public class Schedule
     public ProfessorCourse getRandomPC(ArrayList<ProfessorCourse> ALTemp)
     {
 	int index = myR.nextInt(ALTemp.size());
-	return ALTemp.get(index);
-	    
+	return ALTemp.get(index);	    
     }
     
     /**Return a random RoomTime from ArrayList
@@ -343,8 +328,7 @@ public class Schedule
     public RoomTime getRandomRT(ArrayList<RoomTime> ALTemp)
     {
 	int index = myR.nextInt(ALTemp.size());
-	return ALTemp.get(index);
-	    
+	return ALTemp.get(index);	    
     }
     
      /**Return a random Timeslot from ArrayList
@@ -355,9 +339,6 @@ public class Schedule
     public Timeslot getRandomTS(ArrayList<Timeslot> ALTemp)
     {
 	int index = myR.nextInt(ALTemp.size());
-	return ALTemp.get(index);
-	    
+	return ALTemp.get(index);    
     }
-    
-    //For sort, use (putIfAbsent(K key, V value)) to determine if a key already has a value stored at it. 
 }
